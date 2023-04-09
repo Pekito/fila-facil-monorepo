@@ -1,5 +1,5 @@
-import { Order, OrderList, OrderQueue } from "../entities";
-import { NotFoundError, OrderListNotFoundError, OrderNotFoundError } from "../errors";
+import { Order, OrderList, OrderQueue } from "../entities/index";
+import { NotFoundError, OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
 
 describe('OrderQueue', () => {
   let order1: Order;
@@ -13,46 +13,38 @@ describe('OrderQueue', () => {
     order1 = new Order(null, 'Order 1', 'Label 1');
     order2 = new Order(null, 'Order 2', 'Label 2');
     order3 = new Order(null, 'Order 3', 'Label 3');
-    orderList1 = new OrderList([order1, order2]);
-    orderList2 = new OrderList([order3]);
+    orderList1 = new OrderList('list-1',[order1, order2]);
+    orderList2 = new OrderList('list-2', [order3]);
     orderQueue = new OrderQueue([orderList1, orderList2]);
   });
 
   describe('moveOrder', () => {
     it('Should move an order from one list to another', () => {
-      const sourceListIndex = 0;
-      const destinationListIndex = 1;
 
-      orderQueue.moveOrder(order1.id, sourceListIndex, destinationListIndex);
+      orderQueue.moveOrder(order1.id, orderList1.name, orderList2.name);
 
       expect(orderList1.getOrders()).toEqual([order2]);
       expect(orderList2.getOrders()).toEqual([order3, order1]);
     });
 
     it('Should not move an order if it is not found in the source list', () => {
-      const sourceListIndex = 1;
-      const destinationListIndex = 0;
-
       expect(() => {
-        orderQueue.moveOrder('non-existent-order-id', sourceListIndex, destinationListIndex);
+        orderQueue.moveOrder('non-existent-order-id', orderList2.name, orderList1.name);
       }).toThrow(OrderNotFoundError);
     });
 
     it('Should not move an order if the source or destination lists are not found', () => {
-      const sourceListIndex = 2;
-      const destinationListIndex = 0;
 
       expect(() => {
-        orderQueue.moveOrder(order1.id, sourceListIndex, destinationListIndex);
+        orderQueue.moveOrder(order1.id, 'undefined-list', orderList1.name);
       }).toThrow();
     });
   });
 
   describe('moveOrderTo', () => {
     it('Should move an order to a specific list', () => {
-      const destinationListIndex = 0;
 
-      orderQueue.moveOrderTo(order3.id, destinationListIndex);
+      orderQueue.moveOrderTo(order3.id, orderList1.name);
 
       expect(orderList1.getOrders()).toEqual([order1, order2, order3]);
       expect(orderList2.getOrders()).toEqual([]);
@@ -60,13 +52,13 @@ describe('OrderQueue', () => {
 
     it('Should not move an order if it is not found in any list', () => {
       expect(() => {
-        orderQueue.moveOrderTo('non-existent-order-id', 0);
+        orderQueue.moveOrderTo('non-existent-order-id', orderList1.name);
       }).toThrow(OrderListNotFoundError);
     });
 
     it('Should not move an order if the destination list is not found', () => {
       expect(() => {
-        orderQueue.moveOrderTo(order1.id, 2);
+        orderQueue.moveOrderTo(order1.id, 'undefined-list');
       }).toThrow(OrderListNotFoundError);
     });
   });

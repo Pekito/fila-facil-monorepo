@@ -1,10 +1,12 @@
-import { OrderNotFoundError } from '../errors';
-import { Order } from './';
+import { OrderNotFoundError } from '../errors/index';
+import { Order } from './index';
 
 export class OrderList {
+  public name: string;
   private orders: Order[];
 
-  constructor(orders: Order[] = []) {
+  constructor(name: string, orders: Order[] = []) {
+    this.name = name;
     this.orders = orders;
   }
 

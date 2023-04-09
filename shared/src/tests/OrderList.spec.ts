@@ -1,6 +1,6 @@
-import { Order } from '../entities';
-import { OrderList } from '../entities';
-import { OrderNotFoundError } from '../errors';
+import { Order } from '../entities/index';
+import { OrderList } from '../entities/index';
+import { OrderNotFoundError } from '../errors/index';
 
 describe('OrderList', () => {
   let order1: Order;
@@ -10,7 +10,7 @@ describe('OrderList', () => {
   beforeEach(() => {
     order1 = new Order(null, 'Order 1', 'Label 1');
     order2 = new Order(null, 'Order 2', 'Label 2');
-    orderList = new OrderList([order1, order2]);
+    orderList = new OrderList('orderList',[order1, order2]);
   });
 
   it('Should return the list of orders', () => {
