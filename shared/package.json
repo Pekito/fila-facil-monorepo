@@ -1,5 +1,5 @@
 {
-  "name": "@fila-facil/domain",
+  "name": "@fila-facil/shared",
   "version": "1.0.0",
   "description": "Fila Facil's domain",
   "main": "index.js",
