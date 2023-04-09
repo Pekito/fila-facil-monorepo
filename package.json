@@ -1,6 +1,9 @@
 {
   "name": "fila-facil",
-  "workspaces": ["shared", "admin"],
+  "workspaces": [
+    "shared",
+    "admin"
+  ],
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,5 +12,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@fila-facil/admin": "^0.0.1",
+    "@fila-facil/shared": "^1.0.0"
+  }
 }
