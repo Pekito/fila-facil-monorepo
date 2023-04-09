@@ -3,7 +3,7 @@ import { Order } from './index';
 
 export class OrderList {
   public name: string;
-  private orders: Order[];
+  public orders: Order[];
 
   constructor(name: string, orders: Order[] = []) {
     this.name = name;

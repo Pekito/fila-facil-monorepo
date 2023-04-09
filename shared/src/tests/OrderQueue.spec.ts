@@ -1,5 +1,5 @@
 import { Order, OrderList, OrderQueue } from "../entities/index";
-import { NotFoundError, OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
+import { OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
 
 describe('OrderQueue', () => {
   let order1: Order;
@@ -68,6 +68,25 @@ describe('OrderQueue', () => {
       const orderLists = orderQueue.getOrderLists();
 
       expect(orderLists).toEqual([orderList1, orderList2]);
+    });
+  });
+
+  describe('updateList', () => {
+    it('Should update the list with the given name', () => {
+      const newOrder = new Order(null, 'New Order', 'New Label');
+
+      const orders = [newOrder];
+
+      orderQueue.updateList('list-1', orders);
+      expect(orderList1.orders).toEqual(orders);
+    });
+
+    it('Should throw an OrderListNotFoundError if the list with the given name is not found', () => {
+      const newName = 'Non-existent List';
+      const newOrder = new Order(null, 'New Order', 'New Label');
+      const orders = [newOrder];
+
+      expect(() => orderQueue.updateList(newName, orders)).toThrow(OrderListNotFoundError);
     });
   });
 });

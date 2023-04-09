@@ -1,5 +1,5 @@
 import { OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
-import { OrderList } from './index';
+import { Order, OrderList } from './index';
 
 export class OrderQueue {
   private orderLists: OrderList[];
@@ -38,5 +38,16 @@ export class OrderQueue {
 
   public getOrderLists(): OrderList[] {
     return this.orderLists;
+  }
+  public getOrderList(name: string): OrderList{
+    const orderList = this.orderLists.find(orderList => orderList.name === name);
+    if(!orderList) throw new OrderListNotFoundError();
+    return orderList;
+  }
+  public updateList(name: string, list: Order[]) : void {
+    const orderListIndex = this.orderLists.findIndex(orderList => orderList.name === name);
+    if(orderListIndex === -1) throw new OrderListNotFoundError();
+    const orderList = this.orderLists[orderListIndex];
+    orderList.orders = list;
   }
 }
