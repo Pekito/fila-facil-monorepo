@@ -10,14 +10,14 @@
 
 
 const { configure } = require('quasar/wrappers');
-
+const path = require("path");
 
 module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
       // fix: true,
       // include: [],
-      // exclude: [],
+      exclude: ["../*"],
       // rawOptions: {},
       warnings: true,
       errors: true
@@ -76,7 +76,12 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf (viteConf) {
+        Object.assign(viteConf.resolve.alias, {
+          "@shared/entities": path.join(__dirname, "..", "shared"," entities"),
+          "@shared/errors": path.join(__dirname, "..", "shared"," errors"),
+        })
+      },
       // viteVuePluginOptions: {},
 
       
