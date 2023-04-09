@@ -1,0 +1,30 @@
+{
+  "name": "@fila-facil/domain",
+  "version": "1.0.0",
+  "description": "Fila Facil's domain",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest",
+    "test:debug": "npm test -- --watch"
+  },
+  "keywords": [],
+  "author": "Pedro Luiz <p3dr0c4@live.com>",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.5.0",
+    "typescript": "^5.0.4",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/uuid": "^9.0.1",
+    "ts-jest": "^29.1.0"
+  },
+  "homepage": "",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ]
+}
