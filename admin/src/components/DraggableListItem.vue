@@ -16,7 +16,8 @@ withDefaults(defineProps<DraggableListItemProps>(), {});
 <style scoped lang="scss">
     .ff-draggable-list {
         &__item {
-            width: 270px;
+            cursor: pointer;
+            max-width: 270px;
             height: 40px;
             border: 2px solid $secondary;
             border-radius: 8px;
@@ -28,6 +29,9 @@ withDefaults(defineProps<DraggableListItemProps>(), {});
                 color: $white;
                 background: $secondary;
             }
-        }
+            &:active, &.sortable-chosen {
+                cursor: pointer;
+            }
+        }   
     }
 </style>

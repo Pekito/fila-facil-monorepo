@@ -51,13 +51,16 @@ const dragging = ref(false);
 
 <style lang="scss" scoped>
 .ff-draggable-list {
-  border: 1px solid #E7E0EC;
   height: 390px;
   width: 320px;
+  border: 1px solid #E7E0EC;
   border-radius: 16px;
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  & > *:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
   /* ===== Scrollbar CSS ===== */
   /* Firefox */
   & {
@@ -78,9 +81,6 @@ const dragging = ref(false);
     background-color: $secondary;
     border-radius: 8px;
     border: 3px solid $secondary;
-  }
-  div.d-item {
-    margin-bottom: 20px;
   }
 }
 </style>

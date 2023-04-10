@@ -5,10 +5,15 @@ const recebidosList = new OrderList('recebidos');
 const emAndamentoList = new OrderList('em-andamento');
 const prontosList = new OrderList('prontos');
 const finishedList = new OrderList('finished');
-const order = new Order(null,"order 1", "label 1");
-const order2 = new Order(null,"order 2", "label 2");
-recebidosList.addOrder(order);
-recebidosList.addOrder(order2);
+
+recebidosList.addOrder( new Order(null,"order 1", "label 1"));
+recebidosList.addOrder( new Order(null,"order 2", "label 2"));
+recebidosList.addOrder( new Order(null,"order 3", "label 3"));
+recebidosList.addOrder( new Order(null,"order 4", "label 4"));
+recebidosList.addOrder( new Order(null,"order 5", "label 5"));
+recebidosList.addOrder( new Order(null,"order 6", "label 6"));
+recebidosList.addOrder( new Order(null,"order 7", "label 7"));
+recebidosList.addOrder( new Order(null,"order 8", "label 8"));
 const queue = reactive(new OrderQueue([recebidosList, emAndamentoList, prontosList, finishedList]));
 export const useOrderQueueStore = defineStore('order-queue', {
   state: () => ({
