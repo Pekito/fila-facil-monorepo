@@ -1,23 +1,24 @@
 <template>
     <Draggable
-      v-model="componentList"
-      :group="group"
-      class="ff-draggable-list"
-      :enabled="enabled"
-      :item-key="itemKey"
-      @start="dragging = true"
-      @end="dragging = false"
+    v-model="componentList"
+    :group="group"
+    class="ff-draggable-list q-list"
+    :enabled="enabled"
+    :item-key="itemKey"
+    @start="dragging = true"
+    @end="dragging = false"
     >
-      <template #item="{ element }">
-        <div class="d-item">{{element.id}} | {{ element.label }}</div>
-      </template>
-    </Draggable>
+    <template #item="{ element }">
+      <DraggableListItem :id="element.id" :label="element.label" :description="element.description"></DraggableListItem>
+    </template>
+  </Draggable>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
+import DraggableListItem from "./DraggableListItem.vue";
 const props = defineProps({
     enabled: {
       default: true,
@@ -55,7 +56,8 @@ const dragging = ref(false);
   width: 320px;
   border-radius: 16px;
   padding: 20px;
-  overflow-y: auto  ;
+  overflow-y: auto;
+  overflow-x: hidden;
   /* ===== Scrollbar CSS ===== */
   /* Firefox */
   & {
