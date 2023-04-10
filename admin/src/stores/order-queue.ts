@@ -29,6 +29,12 @@ export const useOrderQueueStore = defineStore('order-queue', {
     }
   },
   getters: {
+    getOrderListByName: (state) => {
+      return (name: string): OrderList => {
+        return state.queue.getOrderList(name);
+      }
+    }
+    ,
     recebidos() {
       return queue.getOrderList("recebidos");
     },

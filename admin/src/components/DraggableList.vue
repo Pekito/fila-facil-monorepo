@@ -1,8 +1,9 @@
 <template>
     <Draggable
       v-model="componentList"
-      group="pedido"
+      :group="group"
       class="draggable-list"
+      :enabled="enabled"
       item-key="id"
       @start="dragging = true"
       @end="dragging = false"
@@ -17,17 +18,27 @@
 import { computed, ref } from "vue";
 import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
-defineProps({
-    enabled: Boolean,
-    listName: String,
+const props = defineProps({
+    enabled: {
+      default: true,
+    },
+    listName: {
+      required: true,
+      type: String
+    },
+    group: {
+      required: true,
+      type: String,
+    }
 })
 const orderQueueStore = useOrderQueueStore();
 const componentList = computed({
   get() {
-    return orderQueueStore.recebidos.getOrders();
+    const orderList = orderQueueStore.getOrderListByName(props.listName)
+    return orderList.getOrders();
   },
   set(value) {
-    orderQueueStore.updateList("recebidos", value);
+    orderQueueStore.updateList(props.listName, value);
   }
 });
 const dragging = ref(false);
@@ -35,6 +46,9 @@ const dragging = ref(false);
 
 <style lang="scss" scoped>
 .draggable-list {
+  border: 1px solid red;
+  height: 200px;
+  width: 300px;
   div.d-item {
     margin-bottom: 20px;
   }

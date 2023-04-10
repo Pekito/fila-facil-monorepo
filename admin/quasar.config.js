@@ -80,6 +80,7 @@ module.exports = configure(function (/* ctx */) {
         Object.assign(viteConf.resolve.alias, {
           "@shared/entities": path.join(__dirname, "..", "shared"," entities"),
           "@shared/errors": path.join(__dirname, "..", "shared"," errors"),
+          "@/components": path.join(__dirname, "src", "components" )
         })
       },
       // viteVuePluginOptions: {},

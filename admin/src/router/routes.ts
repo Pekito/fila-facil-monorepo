@@ -4,6 +4,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    redirect() {
+      return "/painel";
+    },
     children: [{ path: 'painel', component: () => import('src/pages/dashboard/DashboardPage.vue') }],
   },
 
