@@ -1,7 +1,7 @@
 <template>
     <div>
-        <draggable-list :list-name="'recebidos'" :group="'pedido'"></draggable-list>
-        <draggable-list :list-name="'em-andamento'" :group="'pedido'"></draggable-list>
+        <draggable-list :list-name="'recebidos'" :group="'pedido'" :item-key="'id'"></draggable-list>
+        <draggable-list :list-name="'em-andamento'" :group="'pedido'" :item-key="'id'"></draggable-list>
     </div>
 </template>
 

@@ -2,9 +2,9 @@
     <Draggable
       v-model="componentList"
       :group="group"
-      class="draggable-list"
+      class="ff-draggable-list"
       :enabled="enabled"
-      item-key="id"
+      :item-key="itemKey"
       @start="dragging = true"
       @end="dragging = false"
     >
@@ -26,6 +26,10 @@ const props = defineProps({
       required: true,
       type: String
     },
+    itemKey: {
+      required: true,
+      type: String,
+    },
     group: {
       required: true,
       type: String,
@@ -45,10 +49,34 @@ const dragging = ref(false);
 </script>
 
 <style lang="scss" scoped>
-.draggable-list {
-  border: 1px solid red;
-  height: 200px;
-  width: 300px;
+.ff-draggable-list {
+  border: 1px solid #E7E0EC;
+  height: 390px;
+  width: 320px;
+  border-radius: 16px;
+  padding: 20px;
+  overflow-y: auto  ;
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  & {
+    scrollbar-width: auto;
+    scrollbar-color: $secondary #E7E0EC;
+  }
+
+  /* Chrome, Edge, and Safari */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #E7E0EC;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $secondary;
+    border-radius: 8px;
+    border: 3px solid $secondary;
+  }
   div.d-item {
     margin-bottom: 20px;
   }
