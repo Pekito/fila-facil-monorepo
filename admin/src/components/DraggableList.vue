@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, provide, ref } from "vue";
 import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
 import DraggableListItem from "./DraggableListItem.vue";
@@ -36,6 +36,7 @@ const props = defineProps({
       type: String,
     }
 })
+provide("listContext", props.listName);
 const orderQueueStore = useOrderQueueStore();
 const componentList = computed({
   get() {
