@@ -20,11 +20,17 @@ export const useOrderQueueStore = defineStore('order-queue', {
     queue
   }),
   actions: {
-    moveToProntos(order: Order) {
-        queue.moveOrderTo(order.id, 'prontos');
+    moveToRecebidos(orderId: string) {
+      queue.moveOrderTo(orderId, 'recebidos');
     },
-    moveToFinished(order: Order) {
-        queue.moveOrderTo(order.id, 'finished');
+    moveToEmAndamento(orderId: string) {
+      queue.moveOrderTo(orderId, 'em-andamento');
+    },
+    moveToProntos(orderId: string) {
+        queue.moveOrderTo(orderId, 'prontos');
+    },
+    moveToFinished(orderId: string) {
+        queue.moveOrderTo(orderId, 'finished');
     },
     getOrderList(name: string) {
       return queue.getOrderList(name);
