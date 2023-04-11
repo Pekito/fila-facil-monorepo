@@ -37,6 +37,9 @@ export const useOrderQueueStore = defineStore('order-queue', {
     },
     updateList(name: string, orders: Order[]) {
       queue.updateList(name, orders);
+    },
+    removeOrder(orderId: string) {
+      queue.removeOrder(orderId);
     }
   },
   getters: {
