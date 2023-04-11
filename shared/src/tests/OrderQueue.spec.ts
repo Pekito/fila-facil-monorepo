@@ -13,7 +13,7 @@ describe('OrderQueue', () => {
     order1 = new Order(null, 'Order 1', 'Label 1');
     order2 = new Order(null, 'Order 2', 'Label 2');
     order3 = new Order(null, 'Order 3', 'Label 3');
-    orderList1 = new OrderList('list-1',[order1, order2]);
+    orderList1 = new OrderList('list-1', [order1, order2]);
     orderList2 = new OrderList('list-2', [order3]);
     orderQueue = new OrderQueue([orderList1, orderList2]);
   });
@@ -89,4 +89,13 @@ describe('OrderQueue', () => {
       expect(() => orderQueue.updateList(newName, orders)).toThrow(OrderListNotFoundError);
     });
   });
+  describe('removeOrder', () => {
+    it('Should remove an order from the queue', () => {
+      orderQueue.removeOrder(order1.id);
+      expect(orderList1.orders).toEqual([order2]);
+    })
+    it('Should throw an OrderNotFoundError if the order with the given id is not found', () => {
+      expect(() => orderQueue.removeOrder('corinthians')).toThrow(OrderNotFoundError);
+    })
+  })
 });

@@ -50,4 +50,10 @@ export class OrderQueue {
     const orderList = this.orderLists[orderListIndex];
     orderList.orders = list;
   }
+  public removeOrder(orderId: string) {
+    const sourceList = this.orderLists.find((orderList) => orderList.getOrderById(orderId));
+    if (!sourceList) throw new OrderNotFoundError('Order Not Found in any list');
+    const orderIndex = sourceList.orders.findIndex(order => order.id === orderId);
+    sourceList.orders.splice(orderIndex, 1);
+  }
 }
