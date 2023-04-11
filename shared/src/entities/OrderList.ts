@@ -26,6 +26,9 @@ export class OrderList {
   public getOrderById(orderId: string): Order | undefined {
     return this.orders.find((order) => order.id === orderId);
   }
+  public getOrderByLabel(orderLabel: string): Order | undefined {
+    return this.orders.find((order) => order.label === orderLabel);
+  }
 
   public editOrder(orderToUpdate: Order): void {
     const order = this.getOrderById(orderToUpdate.id);

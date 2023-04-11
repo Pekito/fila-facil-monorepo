@@ -1,5 +1,5 @@
 import { Order, OrderList, OrderQueue } from "../entities/index";
-import { OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
+import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
 
 describe('OrderQueue', () => {
   let order1: Order;
@@ -97,5 +97,20 @@ describe('OrderQueue', () => {
     it('Should throw an OrderNotFoundError if the order with the given id is not found', () => {
       expect(() => orderQueue.removeOrder('corinthians')).toThrow(OrderNotFoundError);
     })
+  })
+  describe('addOrder', () => {
+    it('Should add an Order to a list', () => {
+      const newOrder = new Order(null, 'New Order', 'New Label');
+      orderQueue.addOrder(newOrder, orderList1.name);
+      expect(orderList1.orders).toEqual([order1, order2, newOrder]);
+    });
+    it('Should throw an OrderAlreadyExistsError if id is already presented', () => {
+      const newOrder = new Order(order1.id, 'New Order', 'New Label');
+      expect(() => orderQueue.addOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
+    });
+    it('Should throw an OrderAlreadyExistsError if label is already presented', () => {
+      const newOrder = new Order(null, 'New Order', order1.label);
+      expect(() => orderQueue.addOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
+    });
   })
 });

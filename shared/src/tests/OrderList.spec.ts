@@ -39,6 +39,11 @@ describe('OrderList', () => {
     expect(result).toEqual(order2);
   });
 
+  it('Should get an order by label', () => {
+    const result = orderList.getOrderByLabel(order2.label);
+    expect(result).toEqual(order2);
+  });
+
   it('Should edit an existing order', () => {
     const updatedOrder = new Order(order2.id, 'New Description', 'New Label');
     orderList.editOrder(updatedOrder);

@@ -1,4 +1,4 @@
-import { OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
+import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
 import { Order, OrderList } from './index';
 
 export class OrderQueue {
@@ -49,6 +49,16 @@ export class OrderQueue {
     if(orderListIndex === -1) throw new OrderListNotFoundError();
     const orderList = this.orderLists[orderListIndex];
     orderList.orders = list;
+  }
+  public addOrder(order: Order, listToAdd: string) {
+    const orderAlreadyExists = this.orderLists.find(orderList => {
+      return orderList.getOrderById(order.id) || orderList.getOrderByLabel(order.label);
+    })
+    if(orderAlreadyExists) throw new OrderAlreadyExistsError();
+
+    const list = this.getOrderList(listToAdd);
+    list.addOrder(order);
+
   }
   public removeOrder(orderId: string) {
     const sourceList = this.orderLists.find((orderList) => orderList.getOrderById(orderId));
