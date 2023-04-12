@@ -120,6 +120,16 @@ describe('OrderQueue', () => {
     });
     it('Should throw an error if list name is not found', () => {
       expect(() => orderQueue.clearList('Corinthians')).toThrow(OrderListNotFoundError)
-    })
+    });
+  })
+  describe('findOrderById', () => {
+    it('Should return the order with the given ID', () => {
+      const result = orderQueue.findOrderById(order1.id);
+      expect(result).toEqual(order1);
+    });
+  
+    it('Should throw an OrderNotFoundError if the order is not found', () => {
+      expect(() => orderQueue.findOrderById('Corinthians')).toThrow(OrderNotFoundError);
+    });
   })
 });

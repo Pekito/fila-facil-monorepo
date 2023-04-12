@@ -62,14 +62,19 @@ export class OrderQueue {
   public removeOrder(orderId: string) {
     const sourceList = this.orderLists.find((orderList) => orderList.getOrderById(orderId));
     if (!sourceList) throw new OrderNotFoundError('Order Not Found in any list');
-    const orderIndex = sourceList.orders.findIndex(order => order.id === orderId);
-    sourceList.orders.splice(orderIndex, 1);
+    sourceList.orders = sourceList.orders.filter(order => order.id !== orderId);
   }
   public clearList(name: string) {
     const orderList = this.findListByName(name);
     orderList.clear();
   }
-
+  public findOrderById(orderId: string): Order {
+    const order = this.orderLists
+    .flatMap(orderList => orderList.orders)
+    .find(order => order.id === orderId);
+    if (!order) throw new OrderNotFoundError('Order Not Found in any list');
+    return order;
+  }
   private findListByName(name: string): OrderList {
     const orderList = this.orderLists.find(orderList => orderList.name === name);
     if(!orderList) throw new OrderListNotFoundError();
