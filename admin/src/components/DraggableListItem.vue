@@ -1,7 +1,7 @@
 <template>
     <q-item class="ff-draggable-list__item" v-ripple>
         <q-item-section>
-            <span class="ff-draggable-list__text"><strong>#{{ label }}</strong> | description</span>
+            <span class="ff-draggable-list__text"><strong>#{{ label }}</strong> | {{ description }}</span>
         </q-item-section>
         <q-item-section avatar>
             <q-icon name="mdi-dots-vertical" class="ff-draggable-list__action" @click="handleActionClick"/>
