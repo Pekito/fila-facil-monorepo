@@ -7,7 +7,7 @@
         </template>
     </q-input>
     <q-btn-group>
-      <q-btn class="draggable-list-header__button draggable-list-header__button--add" icon="mdi-plus" />
+      <q-btn class="draggable-list-header__button draggable-list-header__button--add" icon="mdi-plus" @click="handleAddClick" />
       <q-btn class="draggable-list-header__button draggable-list-header__button--clear" icon="mdi-delete" @click="handleClearListClick"/>
     </q-btn-group>
     </header>
@@ -19,8 +19,10 @@ import { useOrderQueueStore } from '@/stores/order-queue';
 import { useQuasar } from 'quasar';
 import {getListLabel} from "@/helpers/string-helpers";
 import { TListTypes } from '@/types';
-const listName = inject("listContext") as TListTypes;
-const listLabel = getListLabel(listName);
+import OrderModal from './OrderModal.vue';
+
+const listContext = inject("listContext") as TListTypes;
+const listLabel = getListLabel(listContext);
 const text = ref("");
 const orderQueueStore = useOrderQueueStore();
 const $q = useQuasar();
@@ -36,12 +38,21 @@ function handleClearListClick() {
             color: "primary"
         }
       }).onOk(() => {
-            orderQueueStore.clearList(listName);
+            orderQueueStore.clearList(listContext);
             $q.notify({
                     message: 'Lista limpa com sucesso',
                     icon: 'mdi-check-bold',
                 })
             })
+}
+function handleAddClick() {
+    $q.dialog({
+        component: OrderModal,
+        componentProps:{
+            action: "add",
+            listContext: listContext
+        }
+    })
 }
 
 </script>

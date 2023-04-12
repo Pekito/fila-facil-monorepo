@@ -8,3 +8,7 @@ export function getListLabel(name: TListTypes) {
         case "finished": return "Finalizados"
     }
 }
+
+export function isStringEmpty(arg: string) {
+    return arg === "";
+}

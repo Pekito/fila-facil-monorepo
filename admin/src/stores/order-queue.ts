@@ -28,10 +28,10 @@ export const useOrderQueueStore = defineStore('order-queue', {
       queue.moveOrderTo(orderId, 'em-andamento');
     },
     moveToProntos(orderId: string) {
-        queue.moveOrderTo(orderId, 'prontos');
+      queue.moveOrderTo(orderId, 'prontos');
     },
     moveToFinished(orderId: string) {
-        queue.moveOrderTo(orderId, 'finished');
+      queue .moveOrderTo(orderId, 'finished');
     },
     getOrderList(name: TListTypes) {
       return queue.getOrderList(name);
@@ -39,12 +39,18 @@ export const useOrderQueueStore = defineStore('order-queue', {
     updateList(name: TListTypes, orders: Order[]) {
       queue.updateList(name, orders);
     },
+    clearList(name: TListTypes) {
+      queue.clearList(name);
+    },
+    findOrderById(orderId: string): Order {
+      return queue.findOrderById(orderId);
+    },
     removeOrder(orderId: string) {
       queue.removeOrder(orderId);
     },
-    clearList(name: TListTypes) {
-      queue.clearList(name);
-    }
+    addOrder(order: Order, orderList: TListTypes) {
+      queue.addOrder(order, orderList);
+    },
   },
   getters: {
     getOrderListByName: (state) => {

@@ -7,9 +7,14 @@ export class AlreadyOnQueueValidator {
             label: ""
         };
         if (typeof arg === 'string') {
-             const order = queue.findOrderById(arg);
-             candidate.id = order.id;
-             candidate.label = order.label;
+            try {
+                const order = queue.findOrderById(arg);
+                candidate.id = order.id;
+                candidate.label = order.label;
+            } catch (error) {
+                candidate.id = "";
+                candidate.label = arg;
+            }
         }else {
             candidate.id = arg.id;
             candidate.label = arg.label;

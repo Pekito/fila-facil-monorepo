@@ -1,0 +1,102 @@
+<template>
+  <q-dialog ref="dialogRef" @hide="onDialogHide" persistent>
+    <q-card style="min-width: 350px">
+      <q-form @submit="formSubmitHandler">
+        <q-card-section>
+          <div class="text-h6">Novo Pedido</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model="orderForm.label"
+            autofocus
+            label="Número do Pedido"
+            :rules="[
+              (val: string) => !isStringEmpty(val) || 'Campo não pode estar vazio',
+              (val: string) => alreadyOnQueueValidation(val)  || 'Número de pedido já cadastrado'
+            ]"
+            :lazy-rules="true"
+          />
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model="orderForm.description"
+            label="Descrição do Pedido"
+            :rules="[(val: string) => !isStringEmpty(val) || 'Campo não pode estar vazio']"
+            :lazy-rules="true"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancelar" @click="onDialogCancel" v-close-popup />
+          <q-btn flat label="Adicionar pedido" type="submit" />
+        </q-card-actions>
+      </q-form>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script setup lang="ts">
+import { useDialogPluginComponent } from 'quasar';
+import { useOrderQueueStore } from '@/stores/order-queue';
+import { useQuasar } from 'quasar';
+import { reactive } from 'vue';
+import { Order, OrderQueue } from '@fila-facil/shared/src/entities';
+import {AlreadyOnQueueValidator} from '@fila-facil/shared/src/validations';
+import {isStringEmpty} from "@/helpers/string-helpers"
+import { TListTypes } from '@/types';
+
+export type OrderModalProps = {
+    id?: string,
+    label?: string,
+    description?: string,
+    action: "add" | "edit",
+    listContext: TListTypes
+}
+type OrderModalForm = {
+    id?: string,
+    label: string,
+    description: string,
+}
+const props = defineProps<OrderModalProps>()
+const $q = useQuasar();
+const orderQueueStore = useOrderQueueStore();
+const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent();
+const alreadyOnQueueValidator = AlreadyOnQueueValidator;
+defineEmits([
+    ...useDialogPluginComponent.emits
+])
+const orderForm = reactive<OrderModalForm>({
+    id: '',
+    label: '',
+    description: ''
+});
+if(props.id) {
+    const currentOrder = orderQueueStore.findOrderById(props.id);
+    orderForm.id = currentOrder.id;
+    orderForm.label = currentOrder.label;
+    orderForm.description = currentOrder.description;
+}
+function formSubmitHandler() {
+  const order = new Order(orderForm.id, orderForm.description, orderForm.label);
+  orderQueueStore.addOrder(order, props.listContext);
+  $q.notify({
+    message: 'Pedido Adicionado com sucesso',
+    icon: 'mdi-check-bold'
+  })
+  onDialogOK();
+}
+function alreadyOnQueueValidation(arg: string) {
+  const queue = orderQueueStore.queue as OrderQueue;
+  return alreadyOnQueueValidator.validate(arg, queue);
+}
+
+</script>
+
+<style scoped lang="scss">
+.order-modal {
+    width: 600px;
+}
+</style>
