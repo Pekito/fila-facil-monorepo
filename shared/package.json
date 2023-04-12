@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
-    "test:debug": "npm test -- --watch"
+    "test:watchf": "npm test -- --watch"
   },
   "keywords": [],
   "author": "Pedro Luiz <p3dr0c4@live.com>",
