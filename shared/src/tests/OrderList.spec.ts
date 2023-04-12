@@ -57,4 +57,8 @@ describe('OrderList', () => {
       orderList.editOrder(updatedOrder);
     }).toThrow(OrderNotFoundError);
   });
+  it('Should clear the list', () => {
+    orderList.clear();
+    expect(orderList.orders).toEqual([]);
+  })
 });

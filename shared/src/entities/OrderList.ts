@@ -13,7 +13,9 @@ export class OrderList {
   public getOrders(): Order[] {
     return this.orders;
   }
-
+  public clear(): void {
+    this.orders = [];
+  }
   public addOrder(order: Order, index?: number): void {
     if (index !== undefined) this.orders.splice(index, 0, order);
     else this.orders.push(order);
