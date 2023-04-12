@@ -9,7 +9,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "admin:dev": "npm --prefix ./admin run dev"
+    "admin:dev": "npm run shared:build && npm --prefix ./admin run dev",
+    "shared:build": "npx tsc --project ./shared/tsconfig.json"
   },
   "keywords": [],
   "author": "",
