@@ -1,4 +1,5 @@
-import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
+import { AlreadyOnQueueValidator } from '@/validations';
+import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '@/errors/index';
 import { Order, OrderList } from './index';
 
 export class OrderQueue {
@@ -50,11 +51,8 @@ export class OrderQueue {
     orderList.orders = list;
   }
   public addOrder(order: Order, listToAdd: string) {
-    const orderAlreadyExists = this.orderLists.find(orderList => {
-      return orderList.getOrderById(order.id) || orderList.getOrderByLabel(order.label);
-    })
-    if(orderAlreadyExists) throw new OrderAlreadyExistsError();
-
+    const valid = AlreadyOnQueueValidator.validate(order, this);
+    if(!valid) throw new OrderAlreadyExistsError();
     const list = this.getOrderList(listToAdd);
     list.addOrder(order);
 
