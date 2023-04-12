@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import {OrderQueue, OrderList, Order} from '@fila-facil/shared/src/entities';
 import { reactive } from 'vue';
+import { TListTypes } from '@/types';
 const recebidosList = new OrderList('recebidos');
 const emAndamentoList = new OrderList('em-andamento');
 const prontosList = new OrderList('prontos');
@@ -32,14 +33,17 @@ export const useOrderQueueStore = defineStore('order-queue', {
     moveToFinished(orderId: string) {
         queue.moveOrderTo(orderId, 'finished');
     },
-    getOrderList(name: string) {
+    getOrderList(name: TListTypes) {
       return queue.getOrderList(name);
     },
-    updateList(name: string, orders: Order[]) {
+    updateList(name: TListTypes, orders: Order[]) {
       queue.updateList(name, orders);
     },
     removeOrder(orderId: string) {
       queue.removeOrder(orderId);
+    },
+    clearList(name: TListTypes) {
+      queue.clearList(name);
     }
   },
   getters: {
