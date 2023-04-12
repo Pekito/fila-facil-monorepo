@@ -5,8 +5,8 @@ export class Order {
   public description: string;
   public label: string;
 
-  constructor(id: string | null, description: string, label: string) {
-    if (id === null) this.id = uuid();
+  constructor(id: string | null | undefined, description: string, label: string) {
+    if (id === null || id === undefined) this.id = uuid();
     else this.id = id;
     this.description = description;
     this.label = label;
