@@ -2,15 +2,15 @@
     <div class="dashboard-page__container">
         <div class="dashboard-page__list recebidos">
             <h2 class=" dashboard-page__title"><span>Recebidos</span></h2>
-            <draggable-list :list-name="'recebidos'" :group="'pedido'" :item-key="'id'"></draggable-list>
+            <draggable-list :list-name="'recebidos'" :group="'pedido'" :item-key="'id'" :action-header="true"></draggable-list>
         </div>
         <div class="dashboard-page__list emAndamento">
             <h2 class=" dashboard-page__title"><span>Em Andamento</span></h2>
-            <draggable-list :list-name="'em-andamento'" :group="'pedido'" :item-key="'id'"></draggable-list>
+            <draggable-list :list-name="'em-andamento'" :group="'pedido'" :item-key="'id'" :action-header="true"></draggable-list>
         </div>
         <div class="dashboard-page__list prontos">
             <h2 class=" dashboard-page__title"><span>Prontos</span></h2>
-            <draggable-list :list-name="'prontos'" :group="'pedido'" :item-key="'id'"></draggable-list>
+            <draggable-list :list-name="'prontos'" :group="'pedido'" :item-key="'id'" :action-header="true"></draggable-list>
         </div>
         <div class="dashboard-page__list finished">
             <h2 class="dashboard-page-finished__title">Histórico de pedidos finalizados</h2>

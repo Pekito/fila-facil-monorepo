@@ -1,17 +1,23 @@
 <template>
-    <Draggable
-    v-model="componentList"
-    :group="group"
-    class="ff-draggable-list q-list"
-    :enabled="enabled"
-    :item-key="itemKey"
-    @start="dragging = true"
-    @end="dragging = false"
-    >
-    <template #item="{ element }">
-      <DraggableListItem :id="element.id" :label="element.label" :description="element.description"></DraggableListItem>
-    </template>
-  </Draggable>
+  <div class="ff-draggable-list__container">
+    <DraggableListHeader v-if="actionHeader"></DraggableListHeader>
+    <div class="scroll-wrapper">
+      <Draggable
+      v-model="componentList"
+      :group="group"
+      class="ff-draggable-list q-list"
+      :enabled="enabled"
+      :item-key="itemKey"
+      @start="dragging = true"
+      @end="dragging = false"
+      >
+        <template #item="{ element }">
+          <DraggableListItem :id="element.id" :label="element.label" :description="element.description"></DraggableListItem>
+        </template>
+    </Draggable>    
+    </div>
+
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +25,7 @@ import { computed, provide, ref } from "vue";
 import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
 import DraggableListItem from "./DraggableListItem.vue";
+import DraggableListHeader from "./DraggableListHeader.vue";
 const props = defineProps({
     enabled: {
       default: true,
@@ -34,6 +41,10 @@ const props = defineProps({
     group: {
       required: true,
       type: String,
+    },
+    actionHeader: {
+      default: false,
+      type: Boolean,
     }
 })
 provide("listContext", props.listName);
@@ -51,14 +62,25 @@ const dragging = ref(false);
 </script>
 
 <style lang="scss" scoped>
+.scroll-wrapper {
+  padding: 0 10px;
+  width: 320px;
+
+}
 .ff-draggable-list {
   height: 390px;
-  width: 320px;
-  border: 1px solid #E7E0EC;
-  border-radius: 16px;
-  padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  &__container {
+    border: 1px solid #E7E0EC;
+    border-radius: 16px;
+  }
+  &__item {
+    width: 270px;
+  }
   & > *:not(:last-of-type) {
     margin-bottom: 15px;
   }
@@ -66,7 +88,7 @@ const dragging = ref(false);
   /* Firefox */
   & {
     scrollbar-width: auto;
-    scrollbar-color: $secondary #E7E0EC;
+    scrollbar-color: $secondary $white;
   }
 
   /* Chrome, Edge, and Safari */
@@ -75,7 +97,7 @@ const dragging = ref(false);
   }
 
   &::-webkit-scrollbar-track {
-    background: #E7E0EC;
+    background: $white;
   }
 
   &::-webkit-scrollbar-thumb {
