@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { useDialogPluginComponent } from 'quasar';
 import { useOrderQueueStore } from '@/stores/order-queue';
+import { useQuasar } from 'quasar';
 export type ActionModalProps = {
     id: string,
     label: string,
@@ -75,6 +76,7 @@ const props = defineProps<ActionModalProps>()
 function isList(list: string) {
     return list === props.listName;
 }
+const $q = useQuasar();
 
 defineEmits([
 
@@ -86,24 +88,42 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
 const orderQueueStore = useOrderQueueStore();
 function handleRemoveOrderClick() {
     orderQueueStore.removeOrder(props.id);
+    $q.notify({
+        message: 'Pedido removido com sucesso',
+        icon: 'mdi-delete'
+    });
     onDialogOK();
 }
 function handleMoveOrderClick(name: 'recebidos' | 'em-andamento' | 'prontos' | 'finished') {
-    switch(name) {
-        case 'recebidos':
-            orderQueueStore.moveToRecebidos(props.id);
-        break;
-        case 'em-andamento':
-            orderQueueStore.moveToEmAndamento(props.id);
-        break;
-        case 'prontos':
-            orderQueueStore.moveToProntos(props.id);
-            break;
-        case 'finished':
-            orderQueueStore.moveToFinished(props.id);
-        break;
-    };
-    onDialogOK();
+    try {
+        switch (name) {
+            case 'recebidos':
+                orderQueueStore.moveToRecebidos(props.id);
+                break;
+            case 'em-andamento':
+                orderQueueStore.moveToEmAndamento(props.id);
+                break;
+            case 'prontos':
+                orderQueueStore.moveToProntos(props.id);
+                break;
+            case 'finished':
+                orderQueueStore.moveToFinished(props.id);
+                $q.notify({
+                    message: 'Pedido finalizado com sucesso',
+                    icon: 'mdi-check-bold'
+                })
+                break;
+        };
+    }
+    catch (error) {
+        $q.notify({
+            message: 'Ocorreu um erro inesperado',
+            icon: 'mdi-alert-circle-outline'
+        })
+    }
+    finally {
+        onDialogOK();
+    }
 }
 </script>
 
