@@ -1,5 +1,5 @@
-import { AlreadyOnQueueValidator } from '@/validations';
-import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '@/errors/index';
+import { AlreadyOnQueueValidator } from '../validations';
+import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
 import { Order, OrderList } from './index';
 
 export class OrderQueue {

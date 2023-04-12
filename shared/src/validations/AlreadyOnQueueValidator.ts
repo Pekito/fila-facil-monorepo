@@ -1,4 +1,4 @@
-import { Order, OrderQueue } from "@/entities";
+import { Order, OrderQueue } from "../entities";
 
 export class AlreadyOnQueueValidator {
     public static validate(arg: Order | string, queue: OrderQueue): boolean {
