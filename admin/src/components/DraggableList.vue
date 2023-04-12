@@ -26,27 +26,18 @@ import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
 import DraggableListItem from "./DraggableListItem.vue";
 import DraggableListHeader from "./DraggableListHeader.vue";
-const props = defineProps({
-    enabled: {
-      default: true,
-    },
-    listName: {
-      required: true,
-      type: String
-    },
-    itemKey: {
-      required: true,
-      type: String,
-    },
-    group: {
-      required: true,
-      type: String,
-    },
-    actionHeader: {
-      default: false,
-      type: Boolean,
-    }
-})
+import { TListTypes } from "@/types";
+type DraggableListTypes = {
+  enabled?: boolean;
+  listName: TListTypes;
+  itemKey: string;
+  group: string;
+  actionHeader?: boolean;  
+}
+const props = withDefaults(defineProps<DraggableListTypes>(),{
+    enabled: true,
+    actionHeader: false,
+});
 provide("listContext", props.listName);
 const orderQueueStore = useOrderQueueStore();
 const componentList = computed({
