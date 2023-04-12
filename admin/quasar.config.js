@@ -78,8 +78,6 @@ module.exports = configure(function (/* ctx */) {
 
       extendViteConf (viteConf) {
         Object.assign(viteConf.resolve.alias, {
-          "@shared/entities": path.join(__dirname, "..", "shared"," entities"),
-          "@shared/errors": path.join(__dirname, "..", "shared"," errors"),
           "@": path.join(__dirname, "src")
         })
       },
