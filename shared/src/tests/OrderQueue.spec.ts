@@ -113,4 +113,13 @@ describe('OrderQueue', () => {
       expect(() => orderQueue.addOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
     });
   })
+  describe('clearList', () => {
+    it('Should clear the list', () => {
+      orderQueue.clearList(orderList1.name);
+      expect(orderList1.orders).toEqual([]);
+    });
+    it('Should throw an error if list name is not found', () => {
+      expect(() => orderQueue.clearList('Corinthians')).toThrow(OrderListNotFoundError)
+    })
+  })
 });

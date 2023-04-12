@@ -40,8 +40,7 @@ export class OrderQueue {
     return this.orderLists;
   }
   public getOrderList(name: string): OrderList{
-    const orderList = this.orderLists.find(orderList => orderList.name === name);
-    if(!orderList) throw new OrderListNotFoundError();
+    const orderList = this.findListByName(name);
     return orderList;
   }
   public updateList(name: string, list: Order[]) : void {
@@ -65,5 +64,15 @@ export class OrderQueue {
     if (!sourceList) throw new OrderNotFoundError('Order Not Found in any list');
     const orderIndex = sourceList.orders.findIndex(order => order.id === orderId);
     sourceList.orders.splice(orderIndex, 1);
+  }
+  public clearList(name: string) {
+    const orderList = this.findListByName(name);
+    orderList.clear();
+  }
+
+  private findListByName(name: string): OrderList {
+    const orderList = this.orderLists.find(orderList => orderList.name === name);
+    if(!orderList) throw new OrderListNotFoundError();
+    return orderList;
   }
 }
