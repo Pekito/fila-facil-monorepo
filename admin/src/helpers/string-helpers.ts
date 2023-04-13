@@ -12,3 +12,11 @@ export function getListLabel(name: TListTypes) {
 export function isStringEmpty(arg: string) {
     return arg === "";
 }
+export function isUrlValid(arg: string) {
+        try {
+            new URL (arg);
+        } catch (error) {
+           return false; 
+        }
+        return true;
+}
