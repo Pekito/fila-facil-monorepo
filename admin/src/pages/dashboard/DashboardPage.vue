@@ -70,14 +70,24 @@ import DraggableList from '@/components/DraggableList.vue';
     }
     &-finished {
         &__list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 60px;
-            grid-column-gap: 20px;
-            grid-row-gap: 20px;
             width: 100%;
             border: none;
             padding: 0;
+            ::v-deep(.scroll-wrapper) {
+                width: 100%;
+            }
+            ::v-deep(.ff-draggable-list) {
+                overflow-y: scroll;
+                overflow-x: initial;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: 60px;
+                grid-column-gap: 20px;
+                grid-row-gap: 20px;
+            }
+            ::v-deep(.ff-draggable-list__item) {
+                margin-bottom: 0;
+            }
         }
         &__title {
         font-family: 'Roboto';
