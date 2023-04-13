@@ -104,8 +104,12 @@ describe('OrderQueue', () => {
       orderQueue.addOrder(newOrder, orderList1.name);
       expect(orderList1.orders).toEqual([order1, order2, newOrder]);
     });
-    it('Should throw an OrderAlreadyExistsError if id is already presented', () => {
+    it('Should NOT throw an OrderAlreadyExistsError if id is already presented but label is updated to a new one', () => {
       const newOrder = new Order(order1.id, 'New Order', 'New Label');
+      expect(() => orderQueue.addOrder(newOrder, orderList1.name)).not.toThrow(OrderAlreadyExistsError);
+    });
+    it('Should throw an OrderAlreadyExistsError if an order already has a label', () => {
+      const newOrder = new Order(order1.id, 'New Order', order2.label);
       expect(() => orderQueue.addOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
     });
     it('Should throw an OrderAlreadyExistsError if label is already presented', () => {
