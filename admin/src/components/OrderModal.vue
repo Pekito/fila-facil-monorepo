@@ -103,7 +103,7 @@ function formSubmitHandler() {
   }
   onDialogOK();
 }
-function alreadyOnQueueValidation(arg: string) {
+function alreadyOnQueueValidation() {
   const queue = orderQueueStore.queue as OrderQueue;
   const order = orderForm as Order;
   return alreadyOnQueueValidator.validate(order, queue);
