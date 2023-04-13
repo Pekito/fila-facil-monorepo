@@ -34,7 +34,7 @@
                         </q-item-section>
                         <q-item-section>Mover para Prontos</q-item-section>
                     </q-item>
-                    <q-item clickable v-ripple>
+                    <q-item clickable v-ripple @click="handleEditOrderClick">
                         <q-item-section avatar>
                             <q-icon name="mdi-circle-edit-outline" />
                         </q-item-section>
@@ -66,6 +66,7 @@
 import { useDialogPluginComponent } from 'quasar';
 import { useOrderQueueStore } from '@/stores/order-queue';
 import { useQuasar } from 'quasar';
+import OrderModal from './OrderModal.vue';
 export type ActionModalProps = {
     id: string,
     label: string,
@@ -124,6 +125,20 @@ function handleMoveOrderClick(name: 'recebidos' | 'em-andamento' | 'prontos' | '
     finally {
         onDialogOK();
     }
+}
+function handleEditOrderClick() {
+    $q.dialog({
+        component: OrderModal,
+        componentProps:{
+            action: "edit",
+            listContext: props.listName,
+            id: props.id,
+            label: props.label,
+            description: props.description
+        }
+    }).onOk(() => {
+        onDialogOK();
+    })
 }
 </script>
 
