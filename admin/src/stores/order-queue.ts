@@ -2,23 +2,40 @@ import { defineStore } from 'pinia';
 import {OrderQueue, OrderList, Order} from '@fila-facil/shared/src/entities';
 import { reactive } from 'vue';
 import { TListTypes } from '@/types';
-const recebidosList = new OrderList('recebidos');
+import { useLocalStorage} from '@vueuse/core';
+
+const orders: Order[] = [
+  new Order(null, "lizard burger", "3721"),
+  new Order(null, "happy unicorn", "8745"),
+  new Order(null, "purple balloon", "1234"),
+  new Order(null, "shiny rainbow", "9999"),
+  new Order(null, "fluffy kitten", "5678"),
+  new Order(null, "silly monkey", "2468"),
+  new Order(null, "giant pizza", "1357"),
+  new Order(null, "rainy umbrella", "8021")
+];
+const recebidosList = new OrderList('recebidos', orders);
 const emAndamentoList = new OrderList('em-andamento');
 const prontosList = new OrderList('prontos');
 const finishedList = new OrderList('finished');
-
-recebidosList.addOrder( new Order(null,"order 1", "label 1"));
-recebidosList.addOrder( new Order(null,"order 2", "label 2"));
-recebidosList.addOrder( new Order(null,"order 3", "label 3"));
-recebidosList.addOrder( new Order(null,"order 4", "label 4"));
-recebidosList.addOrder( new Order(null,"order 5", "label 5"));
-recebidosList.addOrder( new Order(null,"order 6", "label 6"));
-recebidosList.addOrder( new Order(null,"order 7", "label 7"));
-recebidosList.addOrder( new Order(null,"order 8", "label 8"));
 const queue = reactive(new OrderQueue([recebidosList, emAndamentoList, prontosList, finishedList]));
 export const useOrderQueueStore = defineStore('order-queue', {
   state: () => ({
-    queue
+    queue: useLocalStorage("order-queue.queue", queue, {
+      serializer: {
+        read: (v: any) => {
+          if(v) {
+            const parsed = JSON.parse(v) as {orderLists: OrderList[]};
+            parsed.orderLists.map(orderList => {
+              queue.updateList(orderList.name, orderList.orders);
+            });
+            return queue;
+          }
+          return queue;
+        },
+        write: (v: any) => JSON.stringify(v),
+      }
+    })
   }),
   actions: {
     moveToRecebidos(orderId: string) {
