@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
+import { useLocalStorage } from "@vueuse/core";
 export const useConfigStore = defineStore('config', {
   state: () => ({
-    integrationUrl: "",
-    offlineMode: false
+    integrationUrl: useLocalStorage("config.integrationUrl",""),
+    offlineMode: useLocalStorage("config.offlineMode", false)
   }),
   actions: {
     setIntegrationUrl(integrationUrl: string) {
