@@ -2,7 +2,8 @@
   "name": "fila-facil",
   "workspaces": [
     "shared",
-    "admin"
+    "admin",
+    "server"
   ],
   "version": "1.0.0",
   "description": "",
