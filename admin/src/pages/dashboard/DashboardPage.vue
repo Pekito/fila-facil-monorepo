@@ -15,7 +15,7 @@
         <div class="dashboard-page__list finished">
             <h2 class="dashboard-page-finished__title">Histórico de pedidos finalizados</h2>
             <h3 class="dashboard-page-finished__subtitle">A lista de pedidos abaixo será excluída automaticamente em <span class="text-primary">24 horas.</span></h3>
-            <draggable-list class="dashboard-page-finished__list" :list-name="'finished'" :group="'finished'" :item-key="'id'" :enabled="false"></draggable-list>
+            <draggable-list class="dashboard-page-finished__list" :list-name="'finished'" :group="'finished'" :item-key="'id'" :disabled="true"></draggable-list>
         </div>
     </div>
 </template>

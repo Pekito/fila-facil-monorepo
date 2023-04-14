@@ -6,7 +6,7 @@
       v-model="componentList"
       :group="group"
       class="ff-draggable-list q-list"
-      :enabled="enabled"
+      :disabled="disabled"
       :item-key="itemKey"
       @start="dragging = true"
       @end="dragging = false"
@@ -28,14 +28,14 @@ import DraggableListItem from "./DraggableListItem.vue";
 import DraggableListHeader from "./DraggableListHeader.vue";
 import { TListTypes } from "@/types";
 type DraggableListTypes = {
-  enabled?: boolean;
+  disabled?: boolean;
   listName: TListTypes;
   itemKey: string;
   group: string;
   actionHeader?: boolean;  
 }
 const props = withDefaults(defineProps<DraggableListTypes>(),{
-    enabled: true,
+    disabled: false,
     actionHeader: false,
 });
 provide("listContext", props.listName);
