@@ -44,6 +44,7 @@ function onReset() {
 }
 function onSubmit() {
     configStore.setIntegrationUrl(configForm.integrationUrl);
+    router.push("/painel");
 }
 
 function handleOfflineModeClick() {
