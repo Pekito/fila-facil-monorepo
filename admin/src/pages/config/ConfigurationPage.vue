@@ -37,7 +37,7 @@ import { isUrlValid } from "@/helpers/string-helpers"
 const configStore = useConfigStore();
 const router = useRouter();
 const configForm = reactive({
-    integrationUrl: "",
+    integrationUrl: configStore.integrationUrl,
 })
 function onReset() {
     configForm.integrationUrl = "";
