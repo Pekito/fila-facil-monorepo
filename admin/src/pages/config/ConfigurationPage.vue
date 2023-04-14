@@ -3,8 +3,12 @@
         <div class="configuration-page__info">
             <h1 class="configuration-page__title">Cadastro de URL de Integração</h1>
             <p class="configuration-page__subtitle">Para o Fila Fácil Admin funcionar plenamente, é necessário inserir a URL de integração com o Fila Fácil Server</p>
-            <p class="configuration-page__caption" v-if="!configStore.isOnOfflineMode">Ou você pode iniciar a navegação offline e utilizar apenas o painel administrativo clicando <span class="configuration-page__skip" @click="handleOfflineModeClick">aqui</span></p>
-            <p class="configuration-page__caption" v-else>Ou caso você não queira realizar nenhuma alteração, pode voltar para o painel clicando <span class="configuration-page__skip" @click="handlePushToDashboardClick">aqui</span></p>
+            <p class="configuration-page__caption" v-if="configStore.isFirstSession">Ou você pode iniciar a navegação offline e utilizar apenas o painel administrativo clicando <span class="configuration-page__skip" @click="handleOfflineModeClick">aqui</span></p>
+            <template v-else>
+                <p class="configuration-page__caption">Ou caso você não queira realizar nenhuma alteração, pode voltar para o painel clicando <span class="configuration-page__skip" @click="handlePushToDashboardClick">aqui</span><br/>
+                <span class="configuration-page__caption" v-if="!configStore.isOnOfflineMode">Ou utilizar a navegação offline clicando <span class="configuration-page__skip" @click="handleOfflineModeClick">aqui</span></span>
+                </p>
+            </template>
         </div>
         <q-form
       @submit="onSubmit"
@@ -48,7 +52,7 @@ function onSubmit() {
 }
 
 function handleOfflineModeClick() {
-    configStore.setOfflineMode(true);
+    configStore.setOfflineMode();
     router.push("/painel");
 }
 function handlePushToDashboardClick() {
