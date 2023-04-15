@@ -40,10 +40,11 @@ export const useOrderQueueStore = defineStore('order-queue', {
         if(itemIndex === -1) return false;
         this.notifying.splice(itemIndex, 1);
         return true;
-    }
+    },
   },
   getters: {
     isNotifying: (state) => (id: string) => state.notifying.includes(id),
-    notifyingCounter: (state) => state.notifying.length
+    notifyingCounter: (state) => state.notifying.length,
+    prontosList: (state) => state.queue.getOrderList('prontos'),
   }
 });

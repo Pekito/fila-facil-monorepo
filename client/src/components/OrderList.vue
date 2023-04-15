@@ -1,18 +1,13 @@
 <template>
     <ul class="order-list">
         <h2 class="order-list__title">Pedidos {{ listTitle }}</h2>
-        <li :class="{
-            'order-list__item': true,
-            'order-list__item--active': orderQueueStore.isNotifying(order.id)
-        }"
-            v-for="order in orders"
+        <OrderListItem  v-for="order in orders"
             :key="order.id"
-            @click="handleNotifyClick(order)"
-            >
-            <span class="order-list__item__label">
-                <strong>{{ order.label }}</strong> | {{order.description}}
-            </span>
-        </li>
+            @click="handleNotifyClick(order)" 
+            :label="order.label"
+            :description="order.description"
+            :is-notifying="orderQueueStore.isNotifying(order.id)"
+        />
     </ul>
 </template>
 
@@ -20,6 +15,7 @@
 import { Order } from '@fila-facil/shared/src/entities';
 import { useOrderQueueStore } from '@/stores/order-queue-store';
 import { useQuasar } from 'quasar';
+import OrderListItem from './OrderListItem.vue';
 export type OrderListProps = {
     orders: Order[]
     listTitle: string
@@ -28,6 +24,8 @@ withDefaults(defineProps<OrderListProps>(), {})
 const $q = useQuasar();
 const orderQueueStore = useOrderQueueStore();
 function handleNotifyClick(order: Order) {
+    const prontos = orderQueueStore.prontosList;
+    if(prontos.getOrderById(order.id)) return;
     if(orderQueueStore.isNotifying(order.id)) {
         orderQueueStore.removeFromNotifying(order.id);
         $q.notify({
