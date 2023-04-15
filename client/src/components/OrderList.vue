@@ -19,16 +19,30 @@
 <script setup lang="ts">
 import { Order } from '@fila-facil/shared/src/entities';
 import { useOrderQueueStore } from '@/stores/order-queue-store';
+import { useQuasar } from 'quasar';
 export type OrderListProps = {
     orders: Order[]
     listTitle: string
 }
-const orderQueueStore = useOrderQueueStore();
 withDefaults(defineProps<OrderListProps>(), {})
+const $q = useQuasar();
+const orderQueueStore = useOrderQueueStore();
 function handleNotifyClick(order: Order) {
-    if(orderQueueStore.isNotifying(order.id)) orderQueueStore.removeFromNotifying(order.id);
-    else orderQueueStore.addToNotifiying(order.id)
-    
+    if(orderQueueStore.isNotifying(order.id)) {
+        orderQueueStore.removeFromNotifying(order.id);
+        $q.notify({
+            type: 'warning',
+            message: `Você não está mais acompanhando o pedido #${order.label}`
+        })
+    }
+    else {
+        orderQueueStore.addToNotifiying(order.id);
+        $q.notify({
+            type: 'positive',
+            message: `Você está acompanhando o pedido #${order.label}`
+        })
+
+    }
 }
 </script>
 
@@ -73,7 +87,7 @@ function handleNotifyClick(order: Order) {
                 line-height: 19px;
                 color: #322F37;
             }
-            
+
             transition: background .2s ease-in;
             &--active {
                 background: #F49524;
