@@ -10,7 +10,7 @@
 
 
 const { configure } = require('quasar/wrappers');
-
+const path = require('path');
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -76,7 +76,11 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf (viteConf) {
+        Object.assign(viteConf.resolve.alias, {
+          "@": path.join(__dirname, "src")
+        })
+      },      
       // viteVuePluginOptions: {},
 
       
