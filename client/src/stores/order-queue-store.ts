@@ -43,6 +43,7 @@ export const useOrderQueueStore = defineStore('order-queue', {
     }
   },
   getters: {
-    isNotifying: (state) => (id: string) => state.notifying.includes(id)
+    isNotifying: (state) => (id: string) => state.notifying.includes(id),
+    notifyingCounter: (state) => state.notifying.length
   }
 });

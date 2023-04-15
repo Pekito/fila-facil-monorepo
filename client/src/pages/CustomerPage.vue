@@ -7,7 +7,7 @@
       <p :class="{'customer-page__list__title':true, 'customer-page__list__title--active': currentList === 'prontos'}" @click="setCurrentList('prontos')">Prontos</p>
     </header>
     <OrderList class="customer-page__list__component" :list-name="currentList" :orders="currentOrderList" :list-title="currentTitle"/>
-    <p class="customer-page__stats">No momento você está acompanhando: <span class="text-primary">0 pedidos.</span></p>
+    <p class="customer-page__stats">No momento você está acompanhando: <span class="text-primary">{{ orderQueueStore.notifyingCounter }} {{notifyCounterLabel}}.</span></p>
   </div>
 </template>
   
@@ -19,13 +19,16 @@
   const currentList = ref("em-andamento");
   const currentTitle = computed(() => {
     return currentList.value.replace('-', ' ');
-  })
+  });
   const currentOrderList = computed(() => {
     return orderQueueStore.queue.getOrderList(currentList.value).orders;
+  });
+  const notifyCounterLabel = computed(() => {
+    return orderQueueStore.notifyingCounter !== 1 ? "pedidos" : "pedido";
   })
   function setCurrentList(listName: string) {
     currentList.value = listName;
-  }
+  };
 </script>
   
 <style lang="scss" scoped>
