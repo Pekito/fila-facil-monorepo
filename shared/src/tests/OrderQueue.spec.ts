@@ -1,5 +1,5 @@
 import { Order, OrderList, OrderQueue } from "../entities/index";
-import { OrderAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
+import { OrderAlreadyExistsError, OrderListAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from "../errors/index";
 
 describe('OrderQueue', () => {
   let order1: Order;
@@ -135,5 +135,37 @@ describe('OrderQueue', () => {
     it('Should throw an OrderNotFoundError if the order is not found', () => {
       expect(() => orderQueue.findOrderById('Corinthians')).toThrow(OrderNotFoundError);
     });
+  })
+  describe('editOrder', () => {
+    it('Should edit an order', () => {
+      const newOrder = new Order(order1.id, 'New Order', 'New Label');
+      orderQueue.editOrder(newOrder, orderList1.name);
+      expect(order1).toEqual(newOrder);
+    });
+    it('Should NOT throw an OrderAlreadyExistsError if id is already presented but label is updated to a new one', () => {
+      const newOrder = new Order(order1.id, 'New Order', 'New Label');
+      expect(() => orderQueue.editOrder(newOrder, orderList1.name)).not.toThrow(OrderAlreadyExistsError);
+    });
+    it('Should throw an OrderAlreadyExistsError if an order already has a label', () => {
+      const newOrder = new Order(order1.id, 'New Order', order2.label);
+      expect(() => orderQueue.editOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
+    });
+    it('Should throw an OrderAlreadyExistsError if label is already presented', () => {
+      const newOrder = new Order(null, 'New Order', order1.label);
+      expect(() => orderQueue.editOrder(newOrder, orderList1.name)).toThrow(OrderAlreadyExistsError);
+    });
+  })
+  describe('addOrderList', () => {
+    it('Should add an OrderList to the Queue', () => {
+      const newOrderList = new OrderList("new-list");
+      orderQueue.addOrderList(newOrderList);
+      expect(orderQueue.getOrderLists()).toEqual([orderList1,orderList2,newOrderList])
+    })
+    it('Should throw an OrderListAlreadyExists error if name is already presented', () => {
+      expect(() => {
+        const newOrderList = new OrderList("list-1");
+        orderQueue.addOrderList(newOrderList);
+      }).toThrow(OrderListAlreadyExistsError);
+    })
   })
 });
