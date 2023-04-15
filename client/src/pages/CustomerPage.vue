@@ -6,15 +6,23 @@
       <p :class="{'customer-page__list__title':true, 'customer-page__list__title--active': currentList === 'em-andamento'}" @click="setCurrentList('em-andamento')">Em andamento</p>
       <p :class="{'customer-page__list__title':true, 'customer-page__list__title--active': currentList === 'prontos'}" @click="setCurrentList('prontos')">Prontos</p>
     </header>
-    <OrderList class="customer-page__list__component" :list-name="currentList"/>
+    <OrderList class="customer-page__list__component" :list-name="currentList" :orders="currentOrderList" :list-title="currentTitle"/>
     <p class="customer-page__stats">No momento você está acompanhando: <span class="text-primary">0 pedidos.</span></p>
   </div>
 </template>
   
 <script setup lang="ts">
+  import { computed, ref } from 'vue';
   import OrderList from '@/components/OrderList.vue';
-  import { ref } from 'vue';
+  import { useOrderQueueStore } from '@/stores/order-queue-store';
+  const orderQueueStore = useOrderQueueStore();
   const currentList = ref("em-andamento");
+  const currentTitle = computed(() => {
+    return currentList.value.replace('-', ' ');
+  })
+  const currentOrderList = computed(() => {
+    return orderQueueStore.queue.getOrderList(currentList.value).orders;
+  })
   function setCurrentList(listName: string) {
     currentList.value = listName;
   }
