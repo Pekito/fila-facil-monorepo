@@ -168,4 +168,14 @@ describe('OrderQueue', () => {
       }).toThrow(OrderListAlreadyExistsError);
     })
   })
+  describe('deleteList', () => {
+    it('Should delete a list', () => {
+      const list = "list-1";
+      orderQueue.deleteList(list);
+      expect(orderQueue.getOrderLists()).toEqual([orderList2]);
+    })
+    it('Should throw a OrderListNotFoundError if given name is not found', () => {
+      expect(() => orderQueue.deleteList("Corinthians")).toThrow(OrderListNotFoundError);
+    })
+  })
 });

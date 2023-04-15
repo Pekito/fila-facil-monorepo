@@ -90,4 +90,12 @@ export class OrderQueue {
     if(orderListExists) throw new OrderListAlreadyExistsError();
     this.orderLists.push(orderList);
     }
+  public deleteList(name: string) {
+    const orderListIndex = this.orderLists.findIndex(orderList => orderList.name === name);
+    if (orderListIndex === -1) throw new OrderListNotFoundError();
+    this.orderLists.splice(orderListIndex, 1);
+    }
+  public resetAllLists() {
+    this.orderLists = [];
+  }  
   }
