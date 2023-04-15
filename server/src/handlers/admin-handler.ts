@@ -18,11 +18,10 @@ export class AdminHandler {
       console.log('New user connected to Admin');
       socket.on('first-load', () => {
         const currentOrderQueue = this.orderQueue.getOrderLists();
-          if(currentOrderQueue.length > 0) {
-            socket.emit('current-queue', currentOrderQueue);
-          }
+        socket.emit('current-queue', currentOrderQueue);
       });
-      socket.on('overwrite-lists', (orderLists: OrderList[]) => {
+      socket.on('overwrite-queue', (orderLists: OrderList[]) => {
+        this.orderQueue.resetAllLists();
           orderLists.forEach(orderList => {
             try {
               this.orderQueue.addOrderList(orderList)
@@ -42,6 +41,7 @@ export class AdminHandler {
       });
 
       socket.on('update-order-list', (name: string, list: Order[]) => {
+        console.log(name, list)
         this.orderQueue.updateList(name, list);
         socket.broadcast.emit('order-list-updated', {name, list});
         this.clientNamespace.emit('order-list-updated', {name, list});
