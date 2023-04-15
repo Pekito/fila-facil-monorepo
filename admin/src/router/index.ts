@@ -1,4 +1,5 @@
 import { route } from 'quasar/wrappers';
+import SocketClient from '@/composables/SocketClient';
 import {
   createMemoryHistory,
   createRouter,
@@ -33,6 +34,7 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
   const configStore = useConfigStore();
+  if(configStore.hasIntegrationUrl && SocketClient.connectionState === "offline") SocketClient.connect();
   Router.beforeEach((to, from, next) => {
     if(!configStore.ableToUse && to.path !== "/config") return next("/config");
     return next();

@@ -1,9 +1,7 @@
-import { defineStore } from 'pinia';
-import {OrderQueue, OrderList, Order} from '@fila-facil/shared/src/entities';
+import { OrderQueue, OrderList, Order } from '@fila-facil/shared/src/entities';
 import { reactive } from 'vue';
-import { TListTypes } from '@/types';
-import { useLocalStorage} from '@vueuse/core';
-
+import { useLocalStorage } from '@vueuse/core';
+import { defineStore } from 'pinia'
 const orders: Order[] = [
   new Order(null, "lizard burger", "3721"),
   new Order(null, "happy unicorn", "8745"),
@@ -24,10 +22,12 @@ export const useOrderQueueStore = defineStore('order-queue', {
     queue: useLocalStorage("order-queue.queue", queue, {
       serializer: {
         read: (v: any) => {
-          if(v) {
-            const parsed = JSON.parse(v) as {orderLists: OrderList[]};
-            parsed.orderLists.map(orderList => {
-              queue.updateList(orderList.name, orderList.orders);
+          if (v) {
+            const parsed = JSON.parse(v) as { orderLists: OrderList[] };
+            parsed.orderLists.forEach(orderList => {
+              const orders = orderList.orders.map(order => new Order(order.id, order.description, order.label));
+              const orderListInstance = new OrderList(orderList.name, orders);
+              queue.updateList(orderListInstance.name, orderListInstance.orders);
             });
             return queue;
           }
@@ -48,34 +48,42 @@ export const useOrderQueueStore = defineStore('order-queue', {
       queue.moveOrderTo(orderId, 'prontos');
     },
     moveToFinished(orderId: string) {
-      queue .moveOrderTo(orderId, 'finished');
+      queue.moveOrderTo(orderId, 'finished');
     },
-    getOrderList(name: TListTypes) {
+    getOrderList(name: string) {
       return queue.getOrderList(name);
     },
-    updateList(name: TListTypes, orders: Order[]) {
+    updateList(name: string, orders: Order[]) {
       queue.updateList(name, orders);
     },
-    clearList(name: TListTypes) {
+    clearList(name: string) {
       queue.clearList(name);
     },
     findOrderById(orderId: string): Order {
       return queue.findOrderById(orderId);
     },
-    removeOrder(orderId: string) {
-      queue.removeOrder(orderId);
+    removeOrder(orderId: string, listName: string) {
+      queue.removeOrder(orderId, listName);
     },
-    addOrder(order: Order, orderList: TListTypes) {
-      queue.addOrder(order, orderList);
+    addOrder(order: Order, listName: string) {
+      queue.addOrder(order, listName);
     },
+    addOrderList(orderList: OrderList) {
+      queue.addOrderList(orderList);
+    },
+    editOrder(order: Order, listName: string) {
+      queue.editOrder(order, listName);
+    },
+    resetAllLists() {
+      queue.resetAllLists();
+    }
   },
   getters: {
     getOrderListByName: (state) => {
       return (name: string): OrderList => {
         return state.queue.getOrderList(name);
       }
-    }
-    ,
+    },
     recebidos() {
       return queue.getOrderList("recebidos");
     },
@@ -88,5 +96,8 @@ export const useOrderQueueStore = defineStore('order-queue', {
     finished() {
       return queue.getOrderList("finished");
     },
+    orderLists() {
+      return queue.getOrderLists();
+    }
   }
-});
+})

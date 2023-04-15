@@ -1,5 +1,5 @@
 <template>
-    <div class="configuration-page__container">
+    <div class="configuration-page__container" @socket-connected="handlePushToDashboardClick">
         <div class="configuration-page__info">
             <h1 class="configuration-page__title">Cadastro de URL de Integração</h1>
             <p class="configuration-page__subtitle">Para o Fila Fácil Admin funcionar plenamente, é necessário inserir a URL de integração com o Fila Fácil Server</p>
@@ -34,10 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, watch, watchEffect } from 'vue';
 import { useConfigStore } from '@/stores/config-store';
 import { useRouter } from 'vue-router';
-import { isUrlValid } from "@/helpers/string-helpers"
+import { isUrlValid } from "@/helpers/string-helpers";
+import SocketClient from '@/composables/SocketClient';
 const configStore = useConfigStore();
 const router = useRouter();
 const configForm = reactive({
@@ -48,11 +49,16 @@ function onReset() {
 }
 function onSubmit() {
     configStore.setIntegrationUrl(configForm.integrationUrl);
+    if(SocketClient.connectionState === "connected") {
+        SocketClient.disconnect();
+    };
+    SocketClient.connect();
     router.push("/painel");
 }
 
 function handleOfflineModeClick() {
     configStore.setOfflineMode();
+    SocketClient.disconnect();
     router.push("/painel");
 }
 function handlePushToDashboardClick() {

@@ -50,24 +50,26 @@ export class OrderQueue {
     const orderList = this.orderLists[orderListIndex];
     orderList.orders = list;
   }
-  public addOrder(order: Order, listToAdd: string) {
+  public addOrder(order: Order, listName: string) {
     const valid = AlreadyOnQueueValidator.validate(order, this);
     if(!valid) throw new OrderAlreadyExistsError();
-    const list = this.getOrderList(listToAdd);
+    const list = this.findListByName(listName);
     list.addOrder(order);
 
   }
-  public editOrder(order: Order, listToAdd: string) {
+  public editOrder(order: Order, listName: string) {
     const valid = AlreadyOnQueueValidator.validate(order, this);
     if(!valid) throw new OrderAlreadyExistsError();
-    const list = this.getOrderList(listToAdd);
+    const list = this.findListByName(listName);
     list.editOrder(order);
     
   }
-  public removeOrder(orderId: string) {
-    const sourceList = this.orderLists.find((orderList) => orderList.getOrderById(orderId));
-    if (!sourceList) throw new OrderNotFoundError('Order Not Found in any list');
-    sourceList.orders = sourceList.orders.filter(order => order.id !== orderId);
+  public removeOrder(orderId: string, listName: string) {
+    const list = this.findListByName(listName);
+    if (!list) throw new OrderListNotFoundError();
+    const order = list.getOrderById(orderId);
+    if(!order) throw new OrderNotFoundError();
+    list.orders = list.orders.filter(order => order.id !== orderId);
   }
   public clearList(name: string) {
     const orderList = this.findListByName(name);

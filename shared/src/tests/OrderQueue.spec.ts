@@ -91,11 +91,14 @@ describe('OrderQueue', () => {
   });
   describe('removeOrder', () => {
     it('Should remove an order from the queue', () => {
-      orderQueue.removeOrder(order1.id);
+      orderQueue.removeOrder(order1.id, orderList1.name);
       expect(orderList1.orders).toEqual([order2]);
     })
+    it('Should throw an OrderListNotFoundError if the list name is not found', () => {
+      expect(() => orderQueue.removeOrder('whatever', 'it takes' )).toThrow(OrderListNotFoundError);
+    })
     it('Should throw an OrderNotFoundError if the order with the given id is not found', () => {
-      expect(() => orderQueue.removeOrder('corinthians')).toThrow(OrderNotFoundError);
+      expect(() => orderQueue.removeOrder('corinthians', orderList1.name)).toThrow(OrderNotFoundError);
     })
   })
   describe('addOrder', () => {

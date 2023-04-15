@@ -23,10 +23,13 @@ export class AdminHandler {
       socket.on('overwrite-queue', (orderLists: OrderList[]) => {
         this.orderQueue.resetAllLists();
           orderLists.forEach(orderList => {
+            const ordersInstance = orderList.orders.map(order => new Order(order.id,order.description,order.label));
+            const orderListInstance = new OrderList(orderList.name, ordersInstance);
             try {
-              this.orderQueue.addOrderList(orderList)
+
+              this.orderQueue.addOrderList(orderListInstance)
             } catch (error) {
-              if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, orderList.orders);
+              if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, ordersInstance);
             }
           });
       }) 
@@ -47,6 +50,26 @@ export class AdminHandler {
         this.clientNamespace.emit('order-list-updated', {name, list});
       });
 
+      socket.on('add-order', (order: Order, name: string) => {
+        this.orderQueue.addOrder(order, name);
+        const list = this.orderQueue.getOrderList(name);
+        socket.broadcast.emit('order-list-updated', {name, list});
+        this.clientNamespace.emit('order-list-updated', {name, list});
+      });
+
+      socket.on('edit-order', (order: Order, name: string) => {
+        this.orderQueue.editOrder(order, name);
+        const list = this.orderQueue.getOrderList(name);
+        socket.broadcast.emit('order-list-updated', {name, list});
+        this.clientNamespace.emit('order-list-updated', {name, list});
+      });
+
+      socket.on('remove-order', (orderId: string, name: string) => {
+        this.orderQueue.removeOrder(orderId, name);
+        const list = this.orderQueue.getOrderList(name);
+        socket.broadcast.emit('order-list-updated', {name, list});
+        this.clientNamespace.emit('order-list-updated', {name, list});
+      });
       socket.on('disconnect', () => {
         console.log('User disconnected from admin');
       });

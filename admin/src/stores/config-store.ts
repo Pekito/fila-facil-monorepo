@@ -4,7 +4,14 @@ export const useConfigStore = defineStore('config', {
   state: () => ({
     integrationUrl: useLocalStorage("config.integrationUrl",""),
     offlineMode: useLocalStorage("config.offlineMode", false),
-    isFirstSession: useLocalStorage("config.isFirstSession", true)
+    isFirstSession: useLocalStorage("config.isFirstSession", true),
+    overwriteServerQueue: true,
+    socketConfiguration: {
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 5000,
+        reconnectionDelayMax: 10000,
+      }
   }),
   actions: {
     setIntegrationUrl(integrationUrl: string) {
@@ -26,3 +33,4 @@ export const useConfigStore = defineStore('config', {
     }
   }
 });
+

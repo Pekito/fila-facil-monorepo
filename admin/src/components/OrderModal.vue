@@ -86,7 +86,7 @@ function formSubmitHandler() {
   const order = new Order(orderForm.id, orderForm.description, orderForm.label);
   switch(props.action) {
     case 'add': {
-      currentList.addOrder(order);
+      orderQueueStore.addOrder(order, props.listContext);
       $q.notify({
         message: 'Pedido Adicionado com sucesso',
         icon: 'mdi-check-bold'
@@ -94,7 +94,7 @@ function formSubmitHandler() {
       break;
     }
     case 'edit':
-    currentList.editOrder(order);
+    orderQueueStore.editOrder(order, props.listContext);
     $q.notify({
         message: 'Pedido editado com sucesso',
         icon: 'mdi-check-bold'
