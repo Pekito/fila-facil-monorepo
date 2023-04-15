@@ -21,14 +21,5 @@ export default class SocketServer {
     const clientNamespace = this.io.of('/client');
     new AdminHandler(adminNamespace, clientNamespace, orderQueue);
     new ClientHandler(clientNamespace, orderQueue);
-
-    this.io.on('connection', (socket) => {
-      console.log('New client connected to default namespace');
-      socket.emit('welcome', 'Welcome to Fila-Facil server!');
-
-      socket.on('disconnect', () => {
-        console.log('Client disconnected from default namespace');
-      });
-    });
   }
 }

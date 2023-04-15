@@ -1,5 +1,6 @@
 import { Namespace, Socket } from 'socket.io';
-import { Order, OrderQueue } from '@fila-facil/shared/src/entities';
+import { Order, OrderList, OrderQueue } from '@fila-facil/shared/src/entities';
+import { OrderListAlreadyExistsError } from '@fila-facil/shared/src/errors';
 
 export class AdminHandler {
   private namespace: Namespace;
@@ -15,16 +16,21 @@ export class AdminHandler {
   private initializeSocketEvents() {
     this.namespace.on('connection', (socket: Socket) => {
       console.log('New user connected to Admin');
-      socket.once('first-load', (orderQueue?: OrderQueue) => {
+      socket.on('first-load', () => {
         const currentOrderQueue = this.orderQueue.getOrderLists();
-        if(!orderQueue) {
-          socket.emit('current-queue', currentOrderQueue);
-        }
-        else {
-          const ordersLists = orderQueue.getOrderLists();
-          ordersLists.forEach(orderList => this.orderQueue.updateList(orderList.name, orderList.orders));
-        }
-      })
+          if(currentOrderQueue.length > 0) {
+            socket.emit('current-queue', currentOrderQueue);
+          }
+      });
+      socket.on('overwrite-lists', (orderLists: OrderList[]) => {
+          orderLists.forEach(orderList => {
+            try {
+              this.orderQueue.addOrderList(orderList)
+            } catch (error) {
+              if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, orderList.orders);
+            }
+          });
+      }) 
       socket.on('get-order-lists', () => {
         const orderLists = this.orderQueue.getOrderLists();
         socket.emit('order-lists', orderLists);
