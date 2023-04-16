@@ -44,7 +44,6 @@ export const useOrderQueueStore = defineStore('order-queue', {
     updateList(name: string, orders: Order[]) {
       queue.updateList(name, orders);
         const ids = this.lists.flatMap(orderList => orderList.orders.map(order => order.id));
-        console.log(ids, this.notifying);
         this.notifying.forEach(orderId => {
           const exists = ids.includes(orderId);
           if(!exists) this.removeFromNotifying(orderId);
