@@ -77,7 +77,8 @@ export const useOrderQueueStore = defineStore('order-queue', {
     },
     resetAllLists() {
       queue.resetAllLists();
-    }
+    },
+    notifyOrder: (order: Order, listName: string) => {}
   },
   getters: {
     getOrderListByName: (state) => {

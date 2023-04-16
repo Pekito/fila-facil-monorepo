@@ -44,6 +44,9 @@ export default class AdminHandler {
                 case "clearList":
                     this.socket.emit('clear-list', args[0]);
                 break;
+                case "notifyOrder":
+                    this.socket.emit('notify-order', args[0], args[1]);
+                break;
             }
         })
     }

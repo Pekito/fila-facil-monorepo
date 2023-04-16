@@ -21,22 +21,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, provide, ref } from "vue";
+import { computed, provide, ref, watch } from "vue";
 import Draggable from "vuedraggable";
 import {useOrderQueueStore} from "src/stores/order-queue";
 import DraggableListItem from "./DraggableListItem.vue";
 import DraggableListHeader from "./DraggableListHeader.vue";
 import { TListTypes } from "@/types";
+import { Order } from "@fila-facil/shared/src/entities";
 type DraggableListTypes = {
   disabled?: boolean;
   listName: TListTypes;
   itemKey: string;
   group: string;
-  actionHeader?: boolean;  
+  actionHeader?: boolean;
+  notifyOnAdded?: boolean;  
 }
 const props = withDefaults(defineProps<DraggableListTypes>(),{
     disabled: false,
     actionHeader: false,
+    notifyOnAdded: false,
 });
 provide("listContext", props.listName);
 const orderQueueStore = useOrderQueueStore();
@@ -50,6 +53,20 @@ const componentList = computed({
   }
 });
 const dragging = ref(false);
+watch(componentList, (newValue, oldValue) => {
+  if(props.notifyOnAdded) {
+    handleNotifyOrder(newValue, oldValue);
+  }
+})
+
+function handleNotifyOrder (newValue: Order[], oldValue: Order[]) {
+    if(newValue.length > oldValue.length) {
+      const addedItem = newValue.find((item) => !oldValue.find(oldItem => oldItem.id === item.id));
+      if (addedItem) {
+        orderQueueStore.notifyOrder(addedItem, props.listName);
+      }
+    }
+}
 </script>
 
 <style lang="scss" scoped>

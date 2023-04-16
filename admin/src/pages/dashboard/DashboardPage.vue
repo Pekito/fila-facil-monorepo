@@ -10,7 +10,7 @@
         </div>
         <div class="dashboard-page__list prontos">
             <h2 class=" dashboard-page__title"><span>Prontos</span></h2>
-            <draggable-list :list-name="'prontos'" :group="'pedido'" :item-key="'id'" :action-header="true"></draggable-list>
+            <draggable-list :list-name="'prontos'" :group="'pedido'" :item-key="'id'" :action-header="true" :notify-on-added="true"></draggable-list>
         </div>
         <div class="dashboard-page__list finished">
             <h2 class="dashboard-page-finished__title">Histórico de pedidos finalizados</h2>

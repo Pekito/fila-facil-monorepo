@@ -59,19 +59,30 @@ export class AdminHandler {
       });
 
       socket.on('edit-order', (order: OrderDTO, name: string) => {
-        const orderInstance = OrderMapper.toInstance(order);
-        this.orderQueue.editOrder(orderInstance, name);
-        const list = this.orderQueue.getOrderList(name);
-        socket.broadcast.emit('order-list-updated', {name, list});
-        this.clientNamespace.emit('order-list-updated', {name, list});
+        try {
+          const orderInstance = OrderMapper.toInstance(order);
+          this.orderQueue.editOrder(orderInstance, name);
+          const list = this.orderQueue.getOrderList(name);
+          socket.broadcast.emit('order-list-updated', {name, list});
+          this.clientNamespace.emit('order-list-updated', {name, list}); 
+        } catch (error) {
+          socket.emit('server-error', error);
+        }
       });
 
       socket.on('remove-order', (orderId: string, name: string) => {
-        this.orderQueue.removeOrder(orderId, name);
-        const list = this.orderQueue.getOrderList(name);
-        socket.broadcast.emit('order-list-updated', {name, list});
-        this.clientNamespace.emit('order-list-updated', {name, list});
+        try {
+          this.orderQueue.removeOrder(orderId, name);
+          const list = this.orderQueue.getOrderList(name);
+          socket.broadcast.emit('order-list-updated', {name, list});
+          this.clientNamespace.emit('order-list-updated', {name, list});
+        } catch (error) {
+          socket.emit('server-error', error);
+        }
       });
+      socket.on('notify-order', (order: OrderDTO, name: string) => {
+        this.clientNamespace.emit('notify-order', {order, name});
+      })
       socket.on('disconnect', () => {
         console.log('User disconnected from admin');
       });
