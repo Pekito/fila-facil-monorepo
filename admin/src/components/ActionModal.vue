@@ -67,6 +67,7 @@ import { useDialogPluginComponent } from 'quasar';
 import { useOrderQueueStore } from '@/stores/order-queue';
 import { useQuasar } from 'quasar';
 import OrderModal from './OrderModal.vue';
+import { getListLabel } from '@/helpers/string-helpers';
 export type ActionModalProps = {
     id: string,
     label: string,
@@ -99,7 +100,7 @@ function handleMoveOrderClick(name: 'recebidos' | 'em-andamento' | 'prontos' | '
     try {
         orderQueueStore.moveOrder(props.id, props.listName, name);
         $q.notify({
-            message: 'Pedido finalizado com sucesso',
+            message: `Pedido movido para ${getListLabel(name)}`,
             icon: 'mdi-check-bold'
         })
     }
