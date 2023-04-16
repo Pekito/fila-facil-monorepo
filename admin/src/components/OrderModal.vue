@@ -65,7 +65,6 @@ const $q = useQuasar();
 const orderQueueStore = useOrderQueueStore();
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 const alreadyOnQueueValidator = AlreadyOnQueueValidator;
-const currentList = orderQueueStore.getOrderListByName(props.listContext);
 
 defineEmits([
     ...useDialogPluginComponent.emits
