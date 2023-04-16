@@ -11,7 +11,7 @@ export class ClientHandler {
     this.orderQueue = orderQueue;
     this.clientLists = ['prontos', 'em-andamento'];
     this.initializeSocketEvents();
-    this.orderQueue.register(new Observer('update-list', this.handleOrderListUpdated.bind(this)));
+    this.orderQueue.register(new Observer('notify-list', this.handleOrderListUpdated.bind(this)));
     this.orderQueue.register(new Observer('notify-order', this.handleNotifyOrder.bind(this)));
   }
   private initializeSocketEvents() {

@@ -44,6 +44,10 @@ export default class AdminHandler {
                     break;
                     case "removeOrder":
                         this.socket.emit('remove-order', args[0], args[1])
+                    break;
+                    case "moveToFinished":
+                        this.socket.emit('move-to-finished', args[0])
+                    break;
                     case "clearList":
                         this.socket.emit('clear-list', args[0]);
                     break;

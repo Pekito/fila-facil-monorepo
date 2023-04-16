@@ -50,21 +50,18 @@ export class OrderQueue extends Observable{
     if(orderListIndex === -1) throw new OrderListNotFoundError();
     const orderList = this.orderLists[orderListIndex];
     orderList.orders = list;
-    this.notify('update-list', {name, list});
   }
   public addOrder(order: Order, listName: string) {
     const valid = AlreadyOnQueueValidator.validate(order, this);
     if(!valid) throw new OrderAlreadyExistsError();
     const list = this.findListByName(listName);
     list.addOrder(order);
-
   }
   public editOrder(order: Order, listName: string) {
     const valid = AlreadyOnQueueValidator.validate(order, this);
     if(!valid) throw new OrderAlreadyExistsError();
     const list = this.findListByName(listName);
     list.editOrder(order);
-    
   }
   public removeOrder(orderId: string, listName: string) {
     const list = this.findListByName(listName);

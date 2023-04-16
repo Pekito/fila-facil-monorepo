@@ -42,9 +42,7 @@ export class AdminHandler {
       });
 
       socket.on('update-order-list', (orderList: OrderListDTO) => {
-
         const orderListInstance = OrderListMapper.toInstance(orderList);
-        
         this.orderQueue.updateList(orderListInstance.name, orderListInstance.orders);
         socket.broadcast.emit('order-list-updated', orderList);
         this.orderQueue.notifyList(orderListInstance);
@@ -80,6 +78,21 @@ export class AdminHandler {
         } catch (error) {
           socket.emit('server-error', error);
         }
+      });
+      socket.on('clear-list', (name: string) => {
+        this.orderQueue.clearList(name);
+        const list = this.orderQueue.getOrderList(name);
+        socket.broadcast.emit('order-list-updated', list);
+        this.orderQueue.notifyList(list);
+      });
+      socket.on('move-to-finished', (orderId: string) => {
+        this.orderQueue.moveOrderTo(orderId, 'finished');
+        const prontos = this.orderQueue.getOrderList('prontos');
+        const finished = this.orderQueue.getOrderList('finished');
+        socket.broadcast.emit('order-list-updated', prontos);
+        socket.broadcast.emit('order-list-updated', finished);
+        this.orderQueue.notifyList(prontos);
+        this.orderQueue.notifyList(finished);
       });
       socket.on('notify-order', (order: OrderDTO, name: string) => {
         const orderInstance = OrderMapper.toInstance(order);
