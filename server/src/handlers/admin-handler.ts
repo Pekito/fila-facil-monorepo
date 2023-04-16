@@ -1,5 +1,7 @@
 import { Namespace, Socket } from 'socket.io';
-import { Order, OrderList, OrderQueue } from '@fila-facil/shared/src/entities';
+import { Order, OrderQueue } from '@fila-facil/shared/src/entities';
+import { OrderDTO, OrderListDTO } from '@fila-facil/shared/src/dtos/';
+import {OrderListMapper, OrderMapper} from '@fila-facil/shared/src/mappers';
 import { OrderListAlreadyExistsError } from '@fila-facil/shared/src/errors';
 
 export class AdminHandler {
@@ -20,16 +22,14 @@ export class AdminHandler {
         const currentOrderQueue = this.orderQueue.getOrderLists();
         socket.emit('current-queue', currentOrderQueue);
       });
-      socket.on('overwrite-queue', (orderLists: OrderList[]) => {
+      socket.on('overwrite-queue', (orderLists: OrderListDTO[]) => {
         this.orderQueue.resetAllLists();
           orderLists.forEach(orderList => {
-            const ordersInstance = orderList.orders.map(order => new Order(order.id,order.description,order.label));
-            const orderListInstance = new OrderList(orderList.name, ordersInstance);
+            const orderListInstance = OrderListMapper.toInstance(orderList);
             try {
-
               this.orderQueue.addOrderList(orderListInstance)
             } catch (error) {
-              if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, ordersInstance);
+              if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, orderListInstance.orders);
             }
           });
       }) 
@@ -43,9 +43,10 @@ export class AdminHandler {
         socket.emit('order-list', orderList);
       });
 
-      socket.on('update-order-list', (name: string, list: Order[]) => {
+      socket.on('update-order-list', (name: string, list: OrderDTO[]) => {
         console.log(name, list)
-        this.orderQueue.updateList(name, list);
+        const listInstance = list.map(order => OrderMapper.toInstance(order));
+        this.orderQueue.updateList(name, listInstance);
         socket.broadcast.emit('order-list-updated', {name, list});
         this.clientNamespace.emit('order-list-updated', {name, list});
       });
@@ -57,8 +58,9 @@ export class AdminHandler {
         this.clientNamespace.emit('order-list-updated', {name, list});
       });
 
-      socket.on('edit-order', (order: Order, name: string) => {
-        this.orderQueue.editOrder(order, name);
+      socket.on('edit-order', (order: OrderDTO, name: string) => {
+        const orderInstance = OrderMapper.toInstance(order);
+        this.orderQueue.editOrder(orderInstance, name);
         const list = this.orderQueue.getOrderList(name);
         socket.broadcast.emit('order-list-updated', {name, list});
         this.clientNamespace.emit('order-list-updated', {name, list});

@@ -1,7 +1,9 @@
 import { OrderQueue, OrderList, Order } from '@fila-facil/shared/src/entities';
+import {OrderListDTO} from "@fila-facil/shared/src/dtos/";
+import {OrderListMapper} from "@fila-facil/shared/src/mappers";
 import { reactive } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 const orders: Order[] = [
   new Order(null, "lizard burger", "3721"),
   new Order(null, "happy unicorn", "8745"),
@@ -23,10 +25,9 @@ export const useOrderQueueStore = defineStore('order-queue', {
       serializer: {
         read: (v: any) => {
           if (v) {
-            const parsed = JSON.parse(v) as { orderLists: OrderList[] };
+            const parsed = JSON.parse(v) as { orderLists: OrderListDTO[] };
             parsed.orderLists.forEach(orderList => {
-              const orders = orderList.orders.map(order => new Order(order.id, order.description, order.label));
-              const orderListInstance = new OrderList(orderList.name, orders);
+              const orderListInstance = OrderListMapper.toInstance(orderList);
               queue.updateList(orderListInstance.name, orderListInstance.orders);
             });
             return queue;
