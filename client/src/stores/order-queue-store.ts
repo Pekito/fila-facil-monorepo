@@ -43,6 +43,9 @@ export const useOrderQueueStore = defineStore('order-queue', {
     },
     updateList(name: string, orders: Order[]) {
       queue.updateList(name, orders);
+    },
+    handleNotification(order: Order) {
+      this.removeFromNotifying(order.id);
     }
   },
   getters: {

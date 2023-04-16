@@ -18,9 +18,15 @@ export default class ClientHandler {
             })
         });
         this.socket.on('order-list-updated', (orderList: OrderListDTO) => {
-            console.log('atualizou', orderList);
             const instance = OrderListMapper.toInstance(orderList);
             this.orderQueueStore.updateList(instance.name, instance.orders);
+        });
+        this.socket.on('notify-order', ({ order, name }: { order: OrderDTO, name: string }) => {
+            const isNotifying = this.orderQueueStore.isNotifying(order.id);
+            if (isNotifying) {
+                const orderInstance = OrderMapper.toInstance(order);
+                this.orderQueueStore.handleNotification(orderInstance);
+            }
         })
     }
 }

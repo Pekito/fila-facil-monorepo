@@ -15,6 +15,8 @@
   import { computed, ref } from 'vue';
   import OrderList from '@/components/OrderList.vue';
   import { useOrderQueueStore } from '@/stores/order-queue-store';
+  import { useQuasar } from 'quasar';
+  const $q = useQuasar();
   const orderQueueStore = useOrderQueueStore();
   const currentList = ref("em-andamento");
   const currentTitle = computed(() => {
@@ -29,6 +31,18 @@
   function setCurrentList(listName: string) {
     currentList.value = listName;
   };
+  orderQueueStore.$onAction(({name, args}) => {
+    switch(name) {
+      case 'handleNotification': {
+        const order = args[0];
+        $q.notify({
+          type: 'positive',
+          message: `O pedido ${order.label} está pronto!`
+        });
+      }
+      break;
+    }
+  })
 </script>
   
 <style lang="scss" scoped>

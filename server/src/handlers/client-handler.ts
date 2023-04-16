@@ -38,7 +38,7 @@ export class ClientHandler {
       this.namespace.emit('order-list-updated', dto);
     }
   }
-  private handleNotifyOrder(order: Order, name: string) {
+  private handleNotifyOrder({order, name}:  {order: Order, name: string}) {
     const orderDto = OrderMapper.toDTO(order);
     this.namespace.emit('notify-order', {order: orderDto, name});
   }
