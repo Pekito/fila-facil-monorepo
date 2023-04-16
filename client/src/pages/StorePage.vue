@@ -2,7 +2,7 @@
   <main class="store-page__container">
     <section class="store-page__section store-page__section__info">
       <article class="store-page__section__content">
-        <h2 class="store-page__section__title store-page__section__title--info">Acompanhe seu pedido</h2>
+        <h2 class="store-page__section__title store-page__section__title--info">Acompanhe seu pedido:</h2>
         <p class="store-page__section__description">Escaneando o código QR abaixo para acessar a página do estabelecimento no Fila Fácil:</p>
         <img class="store-page__section__code" :src="qrcode" :alt="url">
       </article>
@@ -10,13 +10,13 @@
     <section class="store-page__section store-page__section__emAndamento">
       <header class="store-page__header"><h1>Fila Fácil</h1></header>
       <article class="store-page__section__content">
-        <h2 class="store-page__section__title store-page__section__title--black">Pedidos em andamento</h2>
+        <h2 class="store-page__section__title store-page__section__title--black">Pedidos em andamento:</h2>
         <StoreList :orders="orderQueueStore.emAndamentoList.orders"></StoreList>
       </article>
     </section>
     <section class="store-page__section store-page__section__prontos">
       <article class="store-page__section__content">
-        <h2 class="store-page__section__title">Prontos</h2>
+        <h2 class="store-page__section__title">Pedidos prontos:</h2>
         <StoreList :orders="orderQueueStore.prontosList.orders"></StoreList>
       </article>
     </section>
