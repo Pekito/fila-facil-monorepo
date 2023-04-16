@@ -88,7 +88,7 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
 
 const orderQueueStore = useOrderQueueStore();
 function handleRemoveOrderClick() {
-    orderQueueStore.removeOrder(props.id);
+    orderQueueStore.removeOrder(props.id, props.listName);
     $q.notify({
         message: 'Pedido removido com sucesso',
         icon: 'mdi-delete'
