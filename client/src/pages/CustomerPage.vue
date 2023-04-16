@@ -13,10 +13,11 @@
   
 <script setup lang="ts">
   import { computed, ref } from 'vue';
+  import { useQuasar } from 'quasar';
   import OrderList from '@/components/OrderList.vue';
   import { useOrderQueueStore } from '@/stores/order-queue-store';
-  import { useQuasar } from 'quasar';
-  const $q = useQuasar();
+  import { useWebNotification } from '@vueuse/core';
+  const $q = useQuasar(); 
   const orderQueueStore = useOrderQueueStore();
   const currentList = ref("em-andamento");
   const currentTitle = computed(() => {
@@ -35,6 +36,14 @@
     switch(name) {
       case 'handleNotification': {
         const order = args[0];
+        const notification = useWebNotification({
+        title: `Hey! o pedido ${order.label} está pronto!`,
+        dir: 'auto',
+        lang: 'pt-br',
+        renotify: true,
+        tag: order.id,
+      });
+        notification.show();
         $q.notify({
           type: 'positive',
           message: `O pedido ${order.label} está pronto!`
