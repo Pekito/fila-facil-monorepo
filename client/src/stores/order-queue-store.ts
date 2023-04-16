@@ -41,6 +41,9 @@ export const useOrderQueueStore = defineStore('order-queue', {
         this.notifying.splice(itemIndex, 1);
         return true;
     },
+    updateList(name: string, orders: Order[]) {
+      queue.updateList(name, orders);
+    }
   },
   getters: {
     isNotifying: (state) => (id: string) => state.notifying.includes(id),

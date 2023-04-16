@@ -1,11 +1,12 @@
 import { AlreadyOnQueueValidator } from '../validations';
 import { OrderAlreadyExistsError, OrderListAlreadyExistsError, OrderListNotFoundError, OrderNotFoundError } from '../errors/index';
 import { Order, OrderList } from './index';
-
-export class OrderQueue {
+import { Observable } from './Observable';
+export class OrderQueue extends Observable{
   private orderLists: OrderList[];
 
   constructor(orderLists: OrderList[]) {
+    super();
     this.orderLists = orderLists;
   }
 
@@ -49,6 +50,7 @@ export class OrderQueue {
     if(orderListIndex === -1) throw new OrderListNotFoundError();
     const orderList = this.orderLists[orderListIndex];
     orderList.orders = list;
+    this.notify('update-list', {name, list});
   }
   public addOrder(order: Order, listName: string) {
     const valid = AlreadyOnQueueValidator.validate(order, this);
@@ -99,5 +101,11 @@ export class OrderQueue {
     }
   public resetAllLists() {
     this.orderLists = [];
-  }  
   }
+  public notifyOrder(order: Order, name: string) {
+    this.notify('notify-order', {order, name});
+  }
+  public notifyList(orderList: OrderList) {
+    this.notify('notify-list', orderList);
+  }
+}

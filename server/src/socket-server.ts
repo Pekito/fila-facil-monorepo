@@ -19,7 +19,7 @@ export default class SocketServer {
     const orderQueue = new OrderQueue([]);
     const adminNamespace = this.io.of('/admin');
     const clientNamespace = this.io.of('/client');
-    new AdminHandler(adminNamespace, clientNamespace, orderQueue);
+    new AdminHandler(adminNamespace, orderQueue);
     new ClientHandler(clientNamespace, orderQueue);
   }
 }

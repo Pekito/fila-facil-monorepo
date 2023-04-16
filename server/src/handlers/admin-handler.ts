@@ -6,12 +6,10 @@ import { OrderListAlreadyExistsError } from '@fila-facil/shared/src/errors';
 
 export class AdminHandler {
   private namespace: Namespace;
-  private clientNamespace: Namespace;
   private orderQueue: OrderQueue;
 
-  constructor(namespace: Namespace, clientNamespace: Namespace, orderQueue: OrderQueue) {
+  constructor(namespace: Namespace, orderQueue: OrderQueue) {
     this.namespace = namespace;
-    this.clientNamespace = clientNamespace;
     this.orderQueue = orderQueue;
     this.initializeSocketEvents();
   }
@@ -43,19 +41,22 @@ export class AdminHandler {
         socket.emit('order-list', orderList);
       });
 
-      socket.on('update-order-list', (name: string, list: OrderDTO[]) => {
-        console.log(name, list)
-        const listInstance = list.map(order => OrderMapper.toInstance(order));
-        this.orderQueue.updateList(name, listInstance);
-        socket.broadcast.emit('order-list-updated', {name, list});
-        this.clientNamespace.emit('order-list-updated', {name, list});
+      socket.on('update-order-list', (orderList: OrderListDTO) => {
+
+        const orderListInstance = OrderListMapper.toInstance(orderList);
+        
+        this.orderQueue.updateList(orderListInstance.name, orderListInstance.orders);
+        socket.broadcast.emit('order-list-updated', orderList);
+        this.orderQueue.notifyList(orderListInstance);
       });
 
-      socket.on('add-order', (order: Order, name: string) => {
-        this.orderQueue.addOrder(order, name);
+      socket.on('add-order', (dto: OrderDTO, name: string) => {
+        const instance = OrderMapper.toInstance(dto);
+        console.log(dto)
+        this.orderQueue.addOrder(instance, name);
         const list = this.orderQueue.getOrderList(name);
         socket.broadcast.emit('order-list-updated', {name, list});
-        this.clientNamespace.emit('order-list-updated', {name, list});
+        this.orderQueue.notifyList(list);
       });
 
       socket.on('edit-order', (order: OrderDTO, name: string) => {
@@ -64,7 +65,7 @@ export class AdminHandler {
           this.orderQueue.editOrder(orderInstance, name);
           const list = this.orderQueue.getOrderList(name);
           socket.broadcast.emit('order-list-updated', {name, list});
-          this.clientNamespace.emit('order-list-updated', {name, list}); 
+          this.orderQueue.notifyList(list);
         } catch (error) {
           socket.emit('server-error', error);
         }
@@ -75,13 +76,14 @@ export class AdminHandler {
           this.orderQueue.removeOrder(orderId, name);
           const list = this.orderQueue.getOrderList(name);
           socket.broadcast.emit('order-list-updated', {name, list});
-          this.clientNamespace.emit('order-list-updated', {name, list});
+          this.orderQueue.notifyList(list);
         } catch (error) {
           socket.emit('server-error', error);
         }
       });
       socket.on('notify-order', (order: OrderDTO, name: string) => {
-        this.clientNamespace.emit('notify-order', {order, name});
+        const orderInstance = OrderMapper.toInstance(order);
+        this.orderQueue.notifyOrder(orderInstance, name);
       })
       socket.on('disconnect', () => {
         console.log('User disconnected from admin');

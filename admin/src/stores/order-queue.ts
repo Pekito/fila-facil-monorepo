@@ -1,6 +1,6 @@
 import { OrderQueue, OrderList, Order } from '@fila-facil/shared/src/entities';
 import {OrderListDTO} from "@fila-facil/shared/src/dtos/";
-import {OrderListMapper} from "@fila-facil/shared/src/mappers";
+import {OrderListMapper, OrderQueueMapper} from "@fila-facil/shared/src/mappers";
 import { reactive } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -34,7 +34,7 @@ export const useOrderQueueStore = defineStore('order-queue', {
           }
           return queue;
         },
-        write: (v: any) => JSON.stringify(v),
+      write: (v: any) => JSON.stringify(OrderQueueMapper.toDTO(v)),
       }
     })
   }),

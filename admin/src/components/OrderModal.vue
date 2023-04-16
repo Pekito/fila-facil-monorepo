@@ -56,7 +56,7 @@ export type OrderModalProps = {
     listContext: TListTypes
 }
 type OrderModalForm = {
-    id?: string,
+    id: string | null,
     label: string,
     description: string,
 }
@@ -70,7 +70,7 @@ defineEmits([
     ...useDialogPluginComponent.emits
 ])
 const orderForm = reactive<OrderModalForm>({
-    id: '',
+    id: null,
     label: '',
     description: ''
 });

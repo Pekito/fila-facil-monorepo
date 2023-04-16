@@ -29,25 +29,29 @@ export default class AdminHandler {
     }
     private initWatchers() {
         this.orderQueueStore.$onAction(({name, store, args, after}) => {
-            switch(name) {
-                case "updateList":
-                    this.socket.emit('update-order-list', args[0], args[1]);
-                break;
-                case "addOrder":
-                    this.socket.emit('add-order', args[0], args[1]);
-                break;
-                case "editOrder":
-                    this.socket.emit('edit-order', args[0], args[1]);
-                break;
-                case "removeOrder":
-                    this.socket.emit('remove-order', args[0], args[1])
-                case "clearList":
-                    this.socket.emit('clear-list', args[0]);
-                break;
-                case "notifyOrder":
-                    this.socket.emit('notify-order', args[0], args[1]);
-                break;
-            }
+            after(() => {
+                switch(name) {
+                    case "updateList":
+                        this.socket.emit('update-order-list', {name: args[0], orders: args[1]});
+                    break;
+                    case "addOrder":
+                        const currentList: OrderList = this.orderQueueStore.getOrderListByName(args[1]);
+                        const newOrder = currentList.getOrderByLabel(args[0].label);
+                        this.socket.emit('add-order', newOrder, args[1]);
+                    break;
+                    case "editOrder":
+                        this.socket.emit('edit-order', args[0], args[1]);
+                    break;
+                    case "removeOrder":
+                        this.socket.emit('remove-order', args[0], args[1])
+                    case "clearList":
+                        this.socket.emit('clear-list', args[0]);
+                    break;
+                    case "notifyOrder":
+                        this.socket.emit('notify-order', args[0], args[1]);
+                    break;
+                }
+            })
         })
     }
 }
