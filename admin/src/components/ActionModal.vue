@@ -97,24 +97,11 @@ function handleRemoveOrderClick() {
 }
 function handleMoveOrderClick(name: 'recebidos' | 'em-andamento' | 'prontos' | 'finished') {
     try {
-        switch (name) {
-            case 'recebidos':
-                orderQueueStore.moveToRecebidos(props.id);
-                break;
-            case 'em-andamento':
-                orderQueueStore.moveToEmAndamento(props.id);
-                break;
-            case 'prontos':
-                orderQueueStore.moveToProntos(props.id);
-                break;
-            case 'finished':
-                orderQueueStore.moveToFinished(props.id);
-                $q.notify({
-                    message: 'Pedido finalizado com sucesso',
-                    icon: 'mdi-check-bold'
-                })
-                break;
-        };
+        orderQueueStore.moveOrder(props.id, props.listName, name);
+        $q.notify({
+            message: 'Pedido finalizado com sucesso',
+            icon: 'mdi-check-bold'
+        })
     }
     catch (error) {
         $q.notify({
@@ -129,7 +116,7 @@ function handleMoveOrderClick(name: 'recebidos' | 'em-andamento' | 'prontos' | '
 function handleEditOrderClick() {
     $q.dialog({
         component: OrderModal,
-        componentProps:{
+        componentProps: {
             action: "edit",
             listContext: props.listName,
             id: props.id,

@@ -4,10 +4,15 @@ import { Order } from './index';
 export class OrderList {
   public name: string;
   public orders: Order[];
-
-  constructor(name: string, orders: Order[] = []) {
+  public finish?: boolean;
+  public notifies?: boolean;
+  public client?: boolean;
+  constructor(name: string, orders: Order[] = [], finish = false, notifies = false, client = false) {
     this.name = name;
     this.orders = orders;
+    this.finish = finish;
+    this.notifies = notifies;
+    this.client = client;
   }
 
   public getOrders(): Order[] {

@@ -5,11 +5,9 @@ import { OrderListMapper, OrderMapper } from '@fila-facil/shared/src/mappers';
 export class ClientHandler {
   private namespace: Namespace;
   private orderQueue: OrderQueue;
-  private clientLists: string[];
   constructor(namespace: Namespace, orderQueue: OrderQueue) {
     this.namespace = namespace;
     this.orderQueue = orderQueue;
-    this.clientLists = ['prontos', 'em-andamento'];
     this.initializeSocketEvents();
     this.orderQueue.register(new Observer('notify-list', this.handleOrderListUpdated.bind(this)));
     this.orderQueue.register(new Observer('notify-order', this.handleNotifyOrder.bind(this)));
@@ -29,12 +27,12 @@ export class ClientHandler {
   }
   private get clientQueue() {
     const orderLists = this.orderQueue.getOrderLists();
-    return orderLists.filter(orderList => this.clientLists.includes(orderList.name));
+    return orderLists.filter(orderList => orderList.client);
   }
   private handleOrderListUpdated(orderList: OrderList) {
-    const currentList = this.clientQueue.find(clientQueueList => clientQueueList.name === orderList.name);
-    if(currentList) {
-      const dto = OrderListMapper.toDTO(currentList);
+    const isClient = this.clientQueue.find(q => q.name === orderList.name);
+    if(isClient) {
+      const dto = OrderListMapper.toDTO(isClient);
       this.namespace.emit('order-list-updated', dto);
     }
   }

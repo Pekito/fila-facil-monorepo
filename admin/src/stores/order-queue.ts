@@ -15,9 +15,9 @@ const orders: Order[] = [
   new Order(null, "rainy umbrella", "8021")
 ];
 const recebidosList = new OrderList('recebidos', orders);
-const emAndamentoList = new OrderList('em-andamento');
-const prontosList = new OrderList('prontos');
-const finishedList = new OrderList('finished');
+const emAndamentoList = new OrderList('em-andamento', undefined, false, false, true);
+const prontosList = new OrderList('prontos',undefined, false, true,true);
+const finishedList = new OrderList('finished',undefined, true, false, false);
 const queue = reactive(new OrderQueue([recebidosList, emAndamentoList, prontosList, finishedList]));
 export const useOrderQueueStore = defineStore('order-queue', {
   state: () => ({
@@ -39,17 +39,8 @@ export const useOrderQueueStore = defineStore('order-queue', {
     })
   }),
   actions: {
-    moveToRecebidos(orderId: string) {
-      queue.moveOrderTo(orderId, 'recebidos');
-    },
-    moveToEmAndamento(orderId: string) {
-      queue.moveOrderTo(orderId, 'em-andamento');
-    },
-    moveToProntos(orderId: string) {
-      queue.moveOrderTo(orderId, 'prontos');
-    },
-    moveToFinished(orderId: string) {
-      queue.moveOrderTo(orderId, 'finished');
+    moveOrder(orderId: string, source: string ,destination: string) {
+      queue.moveOrder(orderId, source, destination);
     },
     getOrderList(name: string) {
       return queue.getOrderList(name);

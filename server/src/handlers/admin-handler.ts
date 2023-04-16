@@ -25,7 +25,9 @@ export class AdminHandler {
           orderLists.forEach(orderList => {
             const orderListInstance = OrderListMapper.toInstance(orderList);
             try {
+              console.log('Order List DTO', orderListInstance);
               this.orderQueue.addOrderList(orderListInstance)
+              this.orderQueue.notifyList(orderListInstance);
             } catch (error) {
               if(error instanceof OrderListAlreadyExistsError) this.orderQueue.updateList(orderList.name, orderListInstance.orders);
             }
@@ -50,7 +52,6 @@ export class AdminHandler {
 
       socket.on('add-order', (dto: OrderDTO, name: string) => {
         const instance = OrderMapper.toInstance(dto);
-        console.log(dto)
         this.orderQueue.addOrder(instance, name);
         const list = this.orderQueue.getOrderList(name);
         const orderListDTO = OrderListMapper.toDTO(list);
@@ -88,14 +89,16 @@ export class AdminHandler {
         socket.broadcast.emit('order-list-updated', list);
         this.orderQueue.notifyList(list);
       });
-      socket.on('move-to-finished', (orderId: string) => {
-        this.orderQueue.moveOrderTo(orderId, 'finished');
-        const prontos = this.orderQueue.getOrderList('prontos');
-        const finished = this.orderQueue.getOrderList('finished');
-        socket.broadcast.emit('order-list-updated', prontos);
-        socket.broadcast.emit('order-list-updated', finished);
-        this.orderQueue.notifyList(prontos);
-        this.orderQueue.notifyList(finished);
+      socket.on('move-manually', ({orderId, source, destination }: {orderId: string, source: string, destination: string}) => {
+        this.orderQueue.moveOrder(orderId, source, destination);
+        const sourceList = this.orderQueue.getOrderList(source);
+        const destinationList = this.orderQueue.getOrderList(destination);
+        socket.broadcast.emit('order-list-updated', sourceList);
+        socket.broadcast.emit('order-list-updated', destinationList);
+        if(destinationList.notifies){
+          const order = this.orderQueue.findOrderById(orderId);
+          this.orderQueue.notifyOrder(order, destinationList.name); 	
+        };
       });
       socket.on('notify-order', (order: OrderDTO, name: string) => {
         const orderInstance = OrderMapper.toInstance(order);

@@ -6,7 +6,7 @@ import { OrderListDTO } from "@fila-facil/shared/src/dtos";
 import { OrderListMapper } from "@fila-facil/shared/src/mappers";
 export default class AdminHandler {
     private socket: Socket;
-    private orderQueueStore; 
+    private orderQueueStore;
     private configStore;
     constructor(socket: Socket) {
         this.socket = socket;
@@ -17,8 +17,7 @@ export default class AdminHandler {
     }
     private initializeSocketEvents() {
         this.socket.on('current-queue', (orderLists: OrderListDTO[]) => {
-            debugger;
-            if(this.configStore.overwriteServerQueue && this.configStore.isFirstSession) {
+            if (this.configStore.overwriteServerQueue) {
                 this.socket.emit('overwrite-queue', this.orderQueueStore.orderLists);
                 this.configStore.isFirstSession = false;
             }
@@ -37,32 +36,33 @@ export default class AdminHandler {
         })
     }
     private initWatchers() {
-        this.orderQueueStore.$onAction(({name, store, args, after}) => {
+        this.orderQueueStore.$onAction(({ name, store, args, after }) => {
             after(() => {
-                switch(name) {
+                switch (name) {
                     case "updateList":
-                        this.socket.emit('update-order-list', {name: args[0], orders: args[1]});
-                    break;
+                        this.socket.emit('update-order-list', { name: args[0], orders: args[1] });
+                        break;
                     case "addOrder":
                         const currentList: OrderList = this.orderQueueStore.getOrderListByName(args[1]);
                         const newOrder = currentList.getOrderByLabel(args[0].label);
                         this.socket.emit('add-order', newOrder, args[1]);
-                    break;
+                        break;
                     case "editOrder":
                         this.socket.emit('edit-order', args[0], args[1]);
-                    break;
+                        break;
                     case "removeOrder":
                         this.socket.emit('remove-order', args[0], args[1])
-                    break;
-                    case "moveToFinished":
-                        this.socket.emit('move-to-finished', args[0])
-                    break;
+                        break;
+                    case "moveOrder": {
+                        this.socket.emit('move-manually', args[0], args[1], args[2]);
+                    }
+                        break;
                     case "clearList":
                         this.socket.emit('clear-list', args[0]);
-                    break;
+                        break;
                     case "notifyOrder":
                         this.socket.emit('notify-order', args[0], args[1]);
-                    break;
+                        break;
                 }
             })
         })
