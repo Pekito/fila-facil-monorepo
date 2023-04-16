@@ -18,7 +18,7 @@ export class OrderList {
   }
   public addOrder(order: Order, index?: number): void {
     if (index !== undefined) this.orders.splice(index, 0, order);
-    else this.orders.push(order);
+    else this.orders = [...this.orders, order ];
   }
 
   public removeOrder(orderId: string): void {
