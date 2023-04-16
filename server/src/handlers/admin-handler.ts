@@ -25,7 +25,6 @@ export class AdminHandler {
           orderLists.forEach(orderList => {
             const orderListInstance = OrderListMapper.toInstance(orderList);
             try {
-              console.log('Order List DTO', orderListInstance);
               this.orderQueue.addOrderList(orderListInstance)
               this.orderQueue.notifyList(orderListInstance);
             } catch (error) {
@@ -99,6 +98,8 @@ export class AdminHandler {
           const order = this.orderQueue.findOrderById(orderId);
           this.orderQueue.notifyOrder(order, destinationList.name); 	
         };
+        this.orderQueue.notifyList(sourceList);
+        this.orderQueue.notifyList(destinationList);
       });
       socket.on('notify-order', (order: OrderDTO, name: string) => {
         const orderInstance = OrderMapper.toInstance(order);

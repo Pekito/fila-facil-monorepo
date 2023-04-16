@@ -54,7 +54,7 @@ export default class AdminHandler {
                         this.socket.emit('remove-order', args[0], args[1])
                         break;
                     case "moveOrder": {
-                        this.socket.emit('move-manually', args[0], args[1], args[2]);
+                        this.socket.emit('move-manually', {orderId: args[0], source: args[1], destination: args[2]});
                     }
                         break;
                     case "clearList":
