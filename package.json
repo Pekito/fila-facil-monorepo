@@ -12,7 +12,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "admin:dev": "npm run shared:build && npm --prefix ./admin run dev",
-    "shared:build": "npx tsc --project ./shared/tsconfig.json"
+    "shared:build": "npx tsc --project ./shared/tsconfig.json",
+    "server:dev": "npm run shared:build && npm --prefix ./server run dev"
   },
   "keywords": [],
   "author": "",
