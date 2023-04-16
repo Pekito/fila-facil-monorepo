@@ -24,7 +24,7 @@
             (val: string) => isUrlValid(val) || 'Insira uma URL Valida'
         ]"
       />
-
+      <q-checkbox v-model="configForm.overwriteServerQueue" label="Sobrescrever Servidor" color="red" />
       <div class="configuration-page__action">
         <q-btn label="Limpar" type="reset" color="primary" flat/>
         <q-btn label="Enviar" type="submit" color="primary"/>
@@ -43,12 +43,14 @@ const configStore = useConfigStore();
 const router = useRouter();
 const configForm = reactive({
     integrationUrl: configStore.integrationUrl,
+    overwriteServerQueue: false
 })
 function onReset() {
     configForm.integrationUrl = "";
 }
 function onSubmit() {
     configStore.setIntegrationUrl(configForm.integrationUrl);
+    configStore.overwriteServerQueue = configForm.overwriteServerQueue;
     if(SocketClient.connectionState === "connected") {
         SocketClient.disconnect();
     };

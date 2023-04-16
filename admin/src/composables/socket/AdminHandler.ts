@@ -2,6 +2,8 @@ import { OrderList } from "@fila-facil/shared/src/entities";
 import { Socket } from "socket.io-client";
 import { useOrderQueueStore } from "@/stores/order-queue";
 import { useConfigStore } from "@/stores/config-store";
+import { OrderListDTO } from "@fila-facil/shared/src/dtos";
+import { OrderListMapper } from "@fila-facil/shared/src/mappers";
 export default class AdminHandler {
     private socket: Socket;
     private orderQueueStore; 
@@ -14,17 +16,24 @@ export default class AdminHandler {
         this.initWatchers();
     }
     private initializeSocketEvents() {
-        this.socket.on('current-queue', (orderLists: OrderList[]) => {
-            if(this.configStore.overwriteServerQueue) {
-                this.socket.emit('overwrite-queue', this.orderQueueStore.orderLists)
+        this.socket.on('current-queue', (orderLists: OrderListDTO[]) => {
+            debugger;
+            if(this.configStore.overwriteServerQueue && this.configStore.isFirstSession) {
+                this.socket.emit('overwrite-queue', this.orderQueueStore.orderLists);
+                this.configStore.isFirstSession = false;
             }
             else {
                 this.orderQueueStore.resetAllLists();
-                orderLists.forEach(orderList => this.orderQueueStore.addOrderList(orderList));
+                orderLists.forEach(orderList => {
+                    const orderListInstance = OrderListMapper.toInstance(orderList);
+                    this.orderQueueStore.addOrderList(orderListInstance);
+                });
             }
         });
-        this.socket.on('update-order-list', (orderList: OrderList) => {
-            this.orderQueueStore.updateList(orderList.name, orderList.orders);
+        this.socket.on('order-list-updated', (orderList: OrderListDTO) => {
+            console.log(orderList);
+            const orderListInstance = OrderListMapper.toInstance(orderList);
+            this.orderQueueStore.localUpdate(orderListInstance.name, orderListInstance.orders);
         })
     }
     private initWatchers() {

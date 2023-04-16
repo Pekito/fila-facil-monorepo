@@ -57,6 +57,9 @@ export const useOrderQueueStore = defineStore('order-queue', {
     updateList(name: string, orders: Order[]) {
       queue.updateList(name, orders);
     },
+    localUpdate(name: string, orders:Order[]) {
+      queue.updateList(name, orders);
+    },
     clearList(name: string) {
       queue.clearList(name);
     },

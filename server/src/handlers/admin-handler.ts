@@ -53,7 +53,8 @@ export class AdminHandler {
         console.log(dto)
         this.orderQueue.addOrder(instance, name);
         const list = this.orderQueue.getOrderList(name);
-        socket.broadcast.emit('order-list-updated', {name, list});
+        const orderListDTO = OrderListMapper.toDTO(list);
+        socket.broadcast.emit('order-list-updated', orderListDTO);
         this.orderQueue.notifyList(list);
       });
 
@@ -62,7 +63,8 @@ export class AdminHandler {
           const orderInstance = OrderMapper.toInstance(order);
           this.orderQueue.editOrder(orderInstance, name);
           const list = this.orderQueue.getOrderList(name);
-          socket.broadcast.emit('order-list-updated', {name, list});
+          const orderListDTO = OrderListMapper.toDTO(list);
+          socket.broadcast.emit('order-list-updated', orderListDTO);
           this.orderQueue.notifyList(list);
         } catch (error) {
           socket.emit('server-error', error);
@@ -73,7 +75,8 @@ export class AdminHandler {
         try {
           this.orderQueue.removeOrder(orderId, name);
           const list = this.orderQueue.getOrderList(name);
-          socket.broadcast.emit('order-list-updated', {name, list});
+          const orderListDTO = OrderListMapper.toDTO(list);
+          socket.broadcast.emit('order-list-updated', orderListDTO);
           this.orderQueue.notifyList(list);
         } catch (error) {
           socket.emit('server-error', error);
