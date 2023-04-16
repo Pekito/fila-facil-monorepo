@@ -11,9 +11,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "admin:dev": "npm run shared:build && npm --prefix ./admin run dev",
     "shared:build": "npx tsc --project ./shared/tsconfig.json",
-    "server:dev": "npm run shared:build && npm --prefix ./server run dev"
+    "admin:dev": "npm run --prefix ./admin dev",
+    "client:dev": "npm run --prefix ./client dev",
+    "server:dev": "npm run --prefix ./server dev",
+    "project:dev": "npx concurrently \"npm run server:dev\" \"npm run admin:dev\" \"npm run client:dev\"",
+    "dev": "npm run shared:build && npm run project:dev"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +25,8 @@
     "@fila-facil/admin": "^0.0.1",
     "@fila-facil/shared": "^1.0.0",
     "@types/jest": "^29.5.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
   }
 }
