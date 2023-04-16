@@ -17,6 +17,11 @@
   import OrderList from '@/components/OrderList.vue';
   import { useOrderQueueStore } from '@/stores/order-queue-store';
   import { useWebNotification } from '@vueuse/core';
+  import { usePermission } from '@vueuse/core';
+  const permission = usePermission('notifications');
+  if(!permission.value) window.Notification.requestPermission();
+ 
+  
   const $q = useQuasar(); 
   const orderQueueStore = useOrderQueueStore();
   const currentList = ref("em-andamento");
