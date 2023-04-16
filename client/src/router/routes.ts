@@ -8,10 +8,12 @@ const routes: RouteRecordRaw[] = [
       return "/painel-cliente"
     },
     children: [
-      { path: '/painel-cliente', component: () => import('pages/CustomerPage.vue') }, 
-      { path: '/painel-loja', component: () => import('pages/StorePage.vue') }],
+      { path: '/painel-cliente', component: () => import('pages/CustomerPage.vue') }],
   },
-
+  {
+    path: '/painel-loja',
+    component: () => import('pages/StorePage.vue')
+  },
   {
     path: '/:catchAll(.*)*',
     redirect() {
