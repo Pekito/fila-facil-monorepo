@@ -58,6 +58,7 @@ export const useOrderQueueStore = defineStore('order-queue', {
     isNotifying: (state) => (id: string) => state.notifying.includes(id),
     notifyingCounter: (state) => state.notifying.length,
     prontosList: (state) => state.queue.getOrderList('prontos'),
+    emAndamentoList: (state) => state.queue.getOrderList('em-andamento'),
     lists: (state) => state.queue.getOrderLists()
   }
 });

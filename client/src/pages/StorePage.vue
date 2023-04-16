@@ -11,21 +11,26 @@
       <header class="store-page__header"><h1>Fila Fácil</h1></header>
       <article class="store-page__section__content">
         <h2 class="store-page__section__title store-page__section__title--black">Pedidos em andamento</h2>
+        <StoreList :orders="orderQueueStore.emAndamentoList.orders"></StoreList>
       </article>
     </section>
     <section class="store-page__section store-page__section__prontos">
       <article class="store-page__section__content">
         <h2 class="store-page__section__title">Prontos</h2>
+        <StoreList :orders="orderQueueStore.prontosList.orders"></StoreList>
       </article>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
+import StoreList from '@/components/StoreList.vue';
+import { useOrderQueueStore } from '@/stores/order-queue-store';
 import { useQRCode } from '@vueuse/integrations/useQRCode'
-
+const orderQueueStore = useOrderQueueStore();
 const url = `${window.origin}/painel-cliente`;
 const qrcode = useQRCode(url, {margin: 2, height: 320, width: 320});
+
 </script>
 
 <style scoped lang="scss">
