@@ -2,15 +2,15 @@ import { defineStore } from 'pinia';
 import { useLocalStorage } from "@vueuse/core";
 export const useConfigStore = defineStore('config', {
   state: () => ({
-    integrationUrl: useLocalStorage("config.integrationUrl",""),
+    integrationUrl: useLocalStorage("config.integrationUrl", process.env.SERVER_ADMIN_URL || ""),
     offlineMode: useLocalStorage("config.offlineMode", false),
     isFirstSession: useLocalStorage("config.isFirstSession", true),
     overwriteServerQueue: true,
     socketConfiguration: {
-        reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 5000,
-        reconnectionDelayMax: 10000,
+        reconnection: process.env.SOCKET_RECCONECTION || true,
+        reconnectionAttempts: process.env.SOCKET_RECCONECTION_ATTEMPTS || 3,
+        reconnectionDelay: process.env.SOCKET_RECCONECTION_DELAY || 2500,
+        reconnectionDelayMax: process.env.SOCKET_RECCONECTION_DELAY_MAX || 10000,
       }
   }),
   actions: {

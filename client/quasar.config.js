@@ -11,8 +11,10 @@
 
 const { configure } = require('quasar/wrappers');
 const path = require('path');
+const envPath = path.resolve(__dirname, '..', '.env');
+const dotenv = require('dotenv');
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -69,7 +71,7 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: ctx.prod ? process.env : dotenv.config({path: envPath}).parsed,
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -92,7 +94,8 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      port: 9001,
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

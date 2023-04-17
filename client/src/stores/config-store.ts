@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 export const useConfigStore = defineStore('config', {
   state: () => ({
-    integrationUrl: "http://localhost:3000/client",
+    integrationUrl: process.env.SERVER_CLIENT_URL,
     socketConfiguration: {
-        reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 5000,
-        reconnectionDelayMax: 10000,
-      },
+      reconnection: process.env.SOCKET_RECCONECTION || true,
+      reconnectionAttempts: process.env.SOCKET_RECCONECTION_ATTEMPTS || 3,
+      reconnectionDelay: process.env.SOCKET_RECCONECTION_DELAY || 2500,
+      reconnectionDelayMax: process.env.SOCKET_RECCONECTION_DELAY_MAX || 10000,
+    },
     offlineMode: true,
   }),
   actions: {
