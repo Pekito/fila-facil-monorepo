@@ -10,16 +10,15 @@
 
 
 const { configure } = require('quasar/wrappers');
-const path = require('path');
-const envPath = path.resolve(__dirname, '..', '.env');
-const dotenv = require('dotenv');
-
+const path = require("path");
+const dotenv = require("dotenv");
+const envPath = path.resolve(__dirname, "..", "..", ".env");
 module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
       // include: [],
-      // exclude: [],
+      exclude: ["../*"],
       // rawOptions: {},
       warnings: true,
       errors: true
@@ -82,7 +81,7 @@ module.exports = configure(function (ctx) {
         Object.assign(viteConf.resolve.alias, {
           "@": path.join(__dirname, "src")
         })
-      },      
+      },
       // viteVuePluginOptions: {},
 
       
@@ -95,7 +94,7 @@ module.exports = configure(function (ctx) {
     devServer: {
       // https: true
       open: true, // opens browser window automatically
-      port: 9001,
+      port: 9000
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -113,7 +112,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Dialog', 'Notify']
     },
 
     // animations: 'all', // --- includes all animations
@@ -202,7 +201,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: '@fila-facil/client'
+        appId: '@fila-facil/admin'
       }
     },
 
