@@ -20,6 +20,7 @@ export default class AdminHandler {
             if (this.configStore.overwriteServerQueue) {
                 this.socket.emit('overwrite-queue', this.orderQueueStore.orderLists);
                 this.configStore.isFirstSession = false;
+                this.configStore.overwriteServerQueue = false;
             }
             else {
                 this.orderQueueStore.resetAllLists();
