@@ -1,9 +1,9 @@
-import { OrderList } from "@fila-facil/shared/src/entities";
-import { Socket } from "socket.io-client";
-import { useOrderQueueStore } from "@/stores/order-queue";
-import { useConfigStore } from "@/stores/config-store";
-import { OrderListDTO } from "@fila-facil/shared/src/dtos";
-import { OrderListMapper } from "@fila-facil/shared/src/mappers";
+import { OrderList } from '@fila-facil/shared/src/entities';
+import { Socket } from 'socket.io-client';
+import { useOrderQueueStore } from '@/stores/order-queue';
+import { useConfigStore } from '@/stores/config-store';
+import { OrderListDTO } from '@fila-facil/shared/src/dtos';
+import { OrderListMapper } from '@fila-facil/shared/src/mappers';
 export default class AdminHandler {
     private socket: Socket;
     private orderQueueStore;
@@ -39,28 +39,28 @@ export default class AdminHandler {
         this.orderQueueStore.$onAction(({ name, store, args, after }) => {
             after(() => {
                 switch (name) {
-                    case "updateList":
+                    case 'updateList':
                         this.socket.emit('update-order-list', { name: args[0], orders: args[1] });
                         break;
-                    case "addOrder":
+                    case 'addOrder':
                         const currentList: OrderList = this.orderQueueStore.getOrderListByName(args[1]);
                         const newOrder = currentList.getOrderByLabel(args[0].label);
                         this.socket.emit('add-order', newOrder, args[1]);
                         break;
-                    case "editOrder":
+                    case 'editOrder':
                         this.socket.emit('edit-order', args[0], args[1]);
                         break;
-                    case "removeOrder":
+                    case 'removeOrder':
                         this.socket.emit('remove-order', args[0], args[1])
                         break;
-                    case "moveOrder": {
+                    case 'moveOrder': {
                         this.socket.emit('move-manually', {orderId: args[0], source: args[1], destination: args[2]});
                     }
                         break;
-                    case "clearList":
+                    case 'clearList':
                         this.socket.emit('clear-list', args[0]);
                         break;
-                    case "notifyOrder":
+                    case 'notifyOrder':
                         this.socket.emit('notify-order', args[0], args[1]);
                         break;
                 }

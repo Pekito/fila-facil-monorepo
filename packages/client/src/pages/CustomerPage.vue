@@ -24,7 +24,7 @@
   
   const $q = useQuasar(); 
   const orderQueueStore = useOrderQueueStore();
-  const currentList = ref("em-andamento");
+  const currentList = ref('em-andamento');
   const currentTitle = computed(() => {
     return currentList.value.replace('-', ' ');
   });
@@ -32,7 +32,7 @@
     return orderQueueStore.queue.getOrderList(currentList.value).orders;
   });
   const notifyCounterLabel = computed(() => {
-    return orderQueueStore.notifyingCounter !== 1 ? "pedidos" : "pedido";
+    return orderQueueStore.notifyingCounter !== 1 ? 'pedidos' : 'pedido';
   })
   function setCurrentList(listName: string) {
     currentList.value = listName;

@@ -118,7 +118,7 @@ function handleEditOrderClick() {
     $q.dialog({
         component: OrderModal,
         componentProps: {
-            action: "edit",
+            action: 'edit',
             listContext: props.listName,
             id: props.id,
             label: props.label,

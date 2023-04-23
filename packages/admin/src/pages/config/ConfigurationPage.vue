@@ -37,7 +37,7 @@
 import { reactive, watch, watchEffect } from 'vue';
 import { useConfigStore } from '@/stores/config-store';
 import { useRouter } from 'vue-router';
-import { isUrlValid } from "@/helpers/string-helpers";
+import { isUrlValid } from '@/helpers/string-helpers';
 import SocketClient from '@/composables/SocketClient';
 const configStore = useConfigStore();
 const router = useRouter();
@@ -46,25 +46,25 @@ const configForm = reactive({
     overwriteServerQueue: false
 })
 function onReset() {
-    configForm.integrationUrl = "";
+    configForm.integrationUrl = '';
 }
 function onSubmit() {
     configStore.setIntegrationUrl(configForm.integrationUrl);
     configStore.overwriteServerQueue = configForm.overwriteServerQueue;
-    if(SocketClient.connectionState === "connected") {
+    if(SocketClient.connectionState === 'connected') {
         SocketClient.disconnect();
     };
     SocketClient.connect();
-    router.push("/painel");
+    router.push('/painel');
 }
 
 function handleOfflineModeClick() {
     configStore.setOfflineMode();
     SocketClient.disconnect();
-    router.push("/painel");
+    router.push('/painel');
 }
 function handlePushToDashboardClick() {
-    router.push("/painel");
+    router.push('/painel');
 }
 
 </script>

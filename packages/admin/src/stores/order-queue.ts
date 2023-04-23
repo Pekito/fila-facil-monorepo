@@ -1,6 +1,6 @@
 import { OrderQueue, OrderList, Order } from '@fila-facil/shared/src/entities';
-import {OrderListDTO} from "@fila-facil/shared/src/dtos/";
-import {OrderListMapper, OrderQueueMapper} from "@fila-facil/shared/src/mappers";
+import {OrderListDTO} from '@fila-facil/shared/src/dtos/';
+import {OrderListMapper, OrderQueueMapper} from '@fila-facil/shared/src/mappers';
 import { reactive } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
@@ -12,7 +12,7 @@ const finishedList = new OrderList('finished',undefined, true, false, false);
 const queue = reactive(new OrderQueue([recebidosList, emAndamentoList, prontosList, finishedList]));
 export const useOrderQueueStore = defineStore('order-queue', {
   state: () => ({
-    queue: useLocalStorage("order-queue.queue", queue, {
+    queue: useLocalStorage('order-queue.queue', queue, {
       serializer: {
         read: (v: any) => {
           if (v) {
@@ -72,16 +72,16 @@ export const useOrderQueueStore = defineStore('order-queue', {
       }
     },
     recebidos() {
-      return queue.getOrderList("recebidos");
+      return queue.getOrderList('recebidos');
     },
     emAndamento() {
-      return queue.getOrderList("em-andamento");
+      return queue.getOrderList('em-andamento');
     },
     prontos() {
-      return queue.getOrderList("prontos");
+      return queue.getOrderList('prontos');
     },
     finished() {
-      return queue.getOrderList("finished");
+      return queue.getOrderList('finished');
     },
     orderLists() {
       return queue.getOrderLists();

@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:catchAll(.*)*',
     redirect() {
-      return "/painel";
+      return '/painel';
     }
   },
 ];

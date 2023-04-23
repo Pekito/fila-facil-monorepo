@@ -35,14 +35,14 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter()
 const route = useRoute();
 const isOnConfigPage = computed(() => {
-  return route.path === "/config";
+  return route.path === '/config';
 })
 const iconName = computed(() => {
-  if (isOnConfigPage.value) return "mdi-human-queue";
-  else return "mdi-cog";
+  if (isOnConfigPage.value) return 'mdi-human-queue';
+  else return 'mdi-cog';
 })
 function handleOptionsClick() {
-  if (isOnConfigPage.value) router.push("/painel");
-  else router.push("/config");
+  if (isOnConfigPage.value) router.push('/painel');
+  else router.push('/config');
 }
 </script>

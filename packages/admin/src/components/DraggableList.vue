@@ -21,13 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, provide, ref, watch } from "vue";
-import Draggable from "vuedraggable";
-import {useOrderQueueStore} from "src/stores/order-queue";
-import DraggableListItem from "./DraggableListItem.vue";
-import DraggableListHeader from "./DraggableListHeader.vue";
-import { TListTypes } from "@/types";
-import { Order } from "@fila-facil/shared/src/entities";
+import { computed, provide, ref, watch } from 'vue';
+import Draggable from 'vuedraggable';
+import {useOrderQueueStore} from 'src/stores/order-queue';
+import DraggableListItem from './DraggableListItem.vue';
+import DraggableListHeader from './DraggableListHeader.vue';
+import { TListTypes } from '@/types';
+import { Order } from '@fila-facil/shared/src/entities';
 type DraggableListTypes = {
   disabled?: boolean;
   listName: TListTypes;
@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<DraggableListTypes>(),{
     actionHeader: false,
     notifyOnAdded: false,
 });
-provide("listContext", props.listName);
+provide('listContext', props.listName);
 const orderQueueStore = useOrderQueueStore();
 const componentList = computed({
   get() {

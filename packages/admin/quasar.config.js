@@ -10,15 +10,15 @@
 
 
 const { configure } = require('quasar/wrappers');
-const path = require("path");
-const dotenv = require("dotenv");
-const envPath = path.resolve(__dirname, "..", "..", ".env");
+const path = require('path');
+const dotenv = require('dotenv');
+const envPath = path.resolve(__dirname, '..', '..', '.env');
 module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
       // include: [],
-      exclude: ["../*"],
+      exclude: ['../*'],
       // rawOptions: {},
       warnings: true,
       errors: true
@@ -79,7 +79,7 @@ module.exports = configure(function (ctx) {
 
       extendViteConf (viteConf) {
         Object.assign(viteConf.resolve.alias, {
-          "@": path.join(__dirname, "src")
+          '@': path.join(__dirname, 'src')
         })
       },
       // viteVuePluginOptions: {},

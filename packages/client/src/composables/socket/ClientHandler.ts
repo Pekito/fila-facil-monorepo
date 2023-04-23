@@ -1,7 +1,7 @@
-import { useOrderQueueStore } from "@/stores/order-queue-store";
-import { OrderDTO, OrderListDTO } from "@fila-facil/shared/src/dtos";
-import { OrderListMapper, OrderMapper } from "@fila-facil/shared/src/mappers";
-import { Socket } from "socket.io-client";
+import { useOrderQueueStore } from '@/stores/order-queue-store';
+import { OrderDTO, OrderListDTO } from '@fila-facil/shared/src/dtos';
+import { OrderListMapper, OrderMapper } from '@fila-facil/shared/src/mappers';
+import { Socket } from 'socket.io-client';
 export default class ClientHandler {
     private socket: Socket;
     private orderQueueStore;

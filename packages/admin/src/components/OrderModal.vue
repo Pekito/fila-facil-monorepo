@@ -45,14 +45,14 @@ import { useQuasar } from 'quasar';
 import { reactive } from 'vue';
 import { Order, OrderQueue } from '@fila-facil/shared/src/entities';
 import {AlreadyOnQueueValidator} from '@fila-facil/shared/src/validations';
-import {isStringEmpty} from "@/helpers/string-helpers"
+import {isStringEmpty} from '@/helpers/string-helpers'
 import { TListTypes } from '@/types';
 
 export type OrderModalProps = {
     id?: string,
     label?: string,
     description?: string,
-    action: "add" | "edit",
+    action: 'add' | 'edit',
     listContext: TListTypes
 }
 type OrderModalForm = {
@@ -109,18 +109,18 @@ function alreadyOnQueueValidation() {
 }
 
 const modalLabels = {
-  title: "",
-  buttonLabel: ""
+  title: '',
+  buttonLabel: ''
 }
 switch(props.action) {
   case 'add': {
-    modalLabels.title = "Novo Pedido";
-    modalLabels.buttonLabel = "Adicionar";
+    modalLabels.title = 'Novo Pedido';
+    modalLabels.buttonLabel = 'Adicionar';
     break;
   }
   case 'edit': {
-    modalLabels.title = "Editar Pedido";
-    modalLabels.buttonLabel = "Confirmar";
+    modalLabels.title = 'Editar Pedido';
+    modalLabels.buttonLabel = 'Confirmar';
     break;
   }
 }

@@ -17,25 +17,25 @@
 import { inject, ref } from 'vue';
 import { useOrderQueueStore } from '@/stores/order-queue';
 import { useQuasar } from 'quasar';
-import {getListLabel} from "@/helpers/string-helpers";
+import {getListLabel} from '@/helpers/string-helpers';
 import { TListTypes } from '@/types';
 import OrderModal from './OrderModal.vue';
 
-const listContext = inject("listContext") as TListTypes;
+const listContext = inject('listContext') as TListTypes;
 const listLabel = getListLabel(listContext);
-const text = ref("");
+const text = ref('');
 const orderQueueStore = useOrderQueueStore();
 const $q = useQuasar();
 function handleClearListClick() {
     $q.dialog({
         message: `Você deseja apagar TODOS itens ${listLabel}?`,
         cancel: {
-            label: "Cancelar",
-            color: "negative"
+            label: 'Cancelar',
+            color: 'negative'
         },
         ok: {
-            label: "Apagar",
-            color: "primary"
+            label: 'Apagar',
+            color: 'primary'
         }
       }).onOk(() => {
             orderQueueStore.clearList(listContext);
@@ -49,7 +49,7 @@ function handleAddClick() {
     $q.dialog({
         component: OrderModal,
         componentProps:{
-            action: "add",
+            action: 'add',
             listContext: listContext
         }
     })

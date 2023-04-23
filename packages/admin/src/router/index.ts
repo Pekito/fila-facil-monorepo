@@ -21,9 +21,9 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
   const configStore = useConfigStore();
-  if(configStore.hasIntegrationUrl && SocketClient.connectionState === "offline") SocketClient.connect();
+  if(configStore.hasIntegrationUrl && SocketClient.connectionState === 'offline') SocketClient.connect();
   Router.beforeEach((to, from, next) => {
-    if(!configStore.ableToUse && to.path !== "/config") return next("/config");
+    if(!configStore.ableToUse && to.path !== '/config') return next('/config');
     return next();
   })
   return Router;
