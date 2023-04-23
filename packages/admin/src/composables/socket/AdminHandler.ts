@@ -31,7 +31,6 @@ export default class AdminHandler {
             }
         });
         this.socket.on('order-list-updated', (orderList: OrderListDTO) => {
-            console.log(orderList);
             const orderListInstance = OrderListMapper.toInstance(orderList);
             this.orderQueueStore.localUpdate(orderListInstance.name, orderListInstance.orders);
         })

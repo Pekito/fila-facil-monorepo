@@ -1,5 +1,5 @@
 import { Namespace, Socket } from 'socket.io';
-import { Order, OrderQueue } from '@fila-facil/shared/src/entities';
+import { OrderQueue } from '@fila-facil/shared/src/entities';
 import { OrderDTO, OrderListDTO } from '@fila-facil/shared/src/dtos/';
 import {OrderListMapper, OrderMapper} from '@fila-facil/shared/src/mappers';
 import { OrderListAlreadyExistsError } from '@fila-facil/shared/src/errors';
