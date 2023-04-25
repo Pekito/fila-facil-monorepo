@@ -11,7 +11,7 @@ export default class ClientHandler {
         this.initializeSocketEvents();
     }
     private initializeSocketEvents() {
-        this.socket.on('first-load', (orderLists: OrderListDTO[]) => {
+        this.socket.once('first-load', (orderLists: OrderListDTO[]) => {
             orderLists.forEach(orderList => {
                 const orderListInstance = OrderListMapper.toInstance(orderList);
                 this.orderQueueStore.updateList(orderListInstance.name, orderListInstance.orders);

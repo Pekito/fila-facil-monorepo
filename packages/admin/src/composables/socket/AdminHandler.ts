@@ -16,7 +16,7 @@ export default class AdminHandler {
         this.initWatchers();
     }
     private initializeSocketEvents() {
-        this.socket.on('current-queue', (orderLists: OrderListDTO[]) => {
+        this.socket.once('current-queue', (orderLists: OrderListDTO[]) => {
             if (this.configStore.overwriteServerQueue) {
                 this.socket.emit('overwrite-queue', this.orderQueueStore.orderLists);
                 this.configStore.isFirstSession = false;
