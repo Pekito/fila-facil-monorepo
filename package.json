@@ -16,7 +16,7 @@
     "client:dev": "npm run --prefix ./packages/client dev",
     "server:dev": "npm run --prefix ./packages/server dev",
     "project:dev": "npx concurrently \"npm run server:dev\" \"npm run admin:dev\" \"npm run client:dev\"",
-    "dev": "npm run shared:build && npm run project:dev"
+    "dev": "npx turbo dev"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "turbo": "^1.9.3"
   }
 }
