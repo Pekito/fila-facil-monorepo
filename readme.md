@@ -11,18 +11,21 @@ Para rodar esse projeto, você pode seguir o arquivo `.env.example`.
 
 
 ## Inicialização do projeto
-
+Antes de realizar a primeira inicialização do sistema, é necessário instalar suas dependências utilizando o comando
+```bash
+    npm install
+```
 Para inicializar todos os módulos do Fila Fácil, basta utilizar o comando
 ```bash
-  npm run dev
+    npm run dev
 ```
 
 Para inicilizar um módulo de forma isolada, é necessário utilizar o comando `npm run nome-do-projeto:dev`
 
 ```bash
-npm run admin:dev
-npm run server:dev
-npm run client:dev
+    npm run admin:dev
+    npm run server:dev
+    npm run client:dev
 ```
 
 
