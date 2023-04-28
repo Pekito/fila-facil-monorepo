@@ -27,8 +27,11 @@ Para inicilizar um módulo de forma isolada, é necessário utilizar o comando `
     npm run server:dev
     npm run client:dev
 ```
+### URLs padrão:
 
-
+- Admin: http://localhost:9000
+- Client: http://localhost:9001
+- Server: http://localhost:3000
 ## Stack utilizada
 
 **Admin:** Quasar.js, TypeScript
